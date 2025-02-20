@@ -1,8 +1,12 @@
-import express from 'express';
-const router = express.Router();
+import express from 'express'
+const router = express.Router()
 
-router.get('/movies', (req: express.Request, res: express.Response) => {
-    res.send('A list of all movies');
+router.get('/', (req: express.Request, res: express.Response) => {
+    res.send('Welcome to the movie API')
 });
 
-export default router;
+router.get('/movies', (req: express.Request, res: express.Response) => {
+    res.send('A list of all movies')
+});
+
+export default router
