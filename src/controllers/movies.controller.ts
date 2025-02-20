@@ -3,11 +3,10 @@ import {MoviesService} from "../services/movies.service";
 
 export class MoviesController {
 
-    constructor(
-        private service: MoviesService
-    ) {}
+    constructor(private service: MoviesService) {}
 
     public async getPopularMovies(req: Request, res: Response) {
-        res.send(await this.service.getPopularMovies());
+        const popularMovies = await this.service.getPopularMovies();
+        res.send(popularMovies);
     }
 }

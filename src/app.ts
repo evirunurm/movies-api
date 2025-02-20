@@ -1,18 +1,32 @@
-import express from 'express'
-import movieRoutes from './routes/movies.route'
-import globalRoutes from './routes/routes'
+import express from 'express';
+import movieRoutes from './routes/movies.route';
+import globalRoutes from './routes/routes';
 
-const app = express()
+class App {
+    public app: express.Application;
+    private readonly PORT: number = 3000;
 
-const PORT = 3000
+    constructor() {
+        this.app = express();
+        this.initializeMiddlewares();
+        this.initializeRoutes();
+        this.startServer();
+    }
 
-app.use(express.json())
+    private initializeMiddlewares() {
+        this.app.use(express.json());
+    }
 
-app.use('/api/movies', movieRoutes)
-app.use('/api', globalRoutes)
+    private initializeRoutes() {
+        this.app.use('/api/movies', movieRoutes);
+        this.app.use('/api', globalRoutes);
+    }
 
-if (process.env.NODE_ENV !== 'test') {
-    app.listen(PORT, () => console.log(`Listening on port ${PORT}`))
+    private startServer() {
+        if (process.env.NODE_ENV !== 'test') {
+            this.app.listen(this.PORT, () => console.log(`Listening on port ${this.PORT}`));
+        }
+    }
 }
 
-export default app
+export default new App().app;

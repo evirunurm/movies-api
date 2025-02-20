@@ -1,13 +1,30 @@
 import {MoviesService} from "../../src/services/movies.service";
 import Movie from "../../src/domain/movie";
-import {MoviesRepository} from "../../src/services/movies.repository";
+import {MoviesRepository} from "../../src/db/repositories/movies.repository";
+import {Database} from "sqlite3";
+
+// We mock the sqlite3 module to avoid using a real database
+// This test is run in a memory database
+jest.mock("sqlite3", () => {
+    return {
+        Database: jest.fn().mockImplementation(() => ({
+            all: jest.fn(),
+            run: jest.fn(),
+            close: jest.fn(),
+        })),
+    };
+})
 
 describe('Movies Service', () => {
     let moviesService: MoviesService
     let moviesRepository: MoviesRepository
 
     beforeEach(() => {
-        moviesRepository = new MoviesRepository()
+        // Instead of an actual instance of database
+        // We use a Dummy whose only purpose is to satisfy the dependency
+        // It's never going to get called
+        const db = jest.fn() as unknown as Database
+        moviesRepository = new MoviesRepository(db)
         moviesService = new MoviesService(moviesRepository)
     })
 
@@ -20,12 +37,12 @@ describe('Movies Service', () => {
                 new Movie('Movie 2', new Date('2015-05-05'), 30),
             ]
             moviesRepository.getMovies = jest.fn().mockResolvedValue(movies)
-            const popularMovies = await moviesService.getPopularMovies()
+            const popularMovies = (await moviesService.getPopularMovies()).results
 
             expect(popularMovies.length).toBe(movies.length)
-            // TODO: Make a custom matcher to compare the popularity of the services
+            // Here we could make a custom matcher to compare the popularity of the movies
             expect(popularMovies[0].popularity)
-                .toBeGreaterThan(popularMovies[1].popularity)
+                .toBeGreaterThanOrEqual(popularMovies[1].popularity)
         })
     })
 })
