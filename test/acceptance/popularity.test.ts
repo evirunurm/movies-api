@@ -2,6 +2,8 @@ import request from 'supertest'
 import app from '../../src/app'
 
 describe('Popular Movies', () => {
+
+
     it('should return a list of movies, ordered by popularity', async () => {
         const response = await request(app)
             .get('/api/movies/popular')
