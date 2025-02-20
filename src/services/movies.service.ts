@@ -1,7 +1,7 @@
-import Movie from "../../domain/movie";
+import Movie from "../domain/movie";
 import {MoviesRepository} from "./movies.repository";
 
-export class MoviesController {
+export class MoviesService {
 
     constructor (private repository: MoviesRepository) {}
 

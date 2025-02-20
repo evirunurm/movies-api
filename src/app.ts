@@ -1,5 +1,6 @@
 import express from 'express'
-import movieRoutes from './routes'
+import movieRoutes from './routes/movies.route'
+import globalRoutes from './routes/routes'
 
 const app = express()
 
@@ -7,7 +8,8 @@ const PORT = 3000
 
 app.use(express.json())
 
-app.use('/api', movieRoutes)
+app.use('/api/movies', movieRoutes)
+app.use('/api', globalRoutes)
 
 if (process.env.NODE_ENV !== 'test') {
     app.listen(PORT, () => console.log(`Listening on port ${PORT}`))
