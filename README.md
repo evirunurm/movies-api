@@ -4,13 +4,37 @@
 
 Los usuarios pueden ver una lista de las películas más populares basadas en las calificaciones y el número de visualizaciones.
 
-**Requisitos**: Página de inicio con una sección destacada de películas populares. Filtro para ordenar las películas por popularidad.
+#### Requisitos funcionales
 
-### Ver las mejor valoradas
+Página de inicio con una sección destacada de películas populares. 
+Filtro para ordenar las películas por popularidad.
+
+#### Requisitos API
+
+- Endpoint: `GET /movies/popular`
+- Query params: 
+  - `limit`, con el número de películas a mostrar.
+- Response: Lista de películas, ordenadas por popularidad.
+
+___
+
+### Ver las películas mejor valoradas
 
 Los usuarios pueden ver una lista de las películas mejor valoradas según las críticas y puntuaciones.
 
-**Requisitos**: Página con una sección de las películas mejor valoradas. Filtro para ordenar las películas por valoración.
+#### Requisitos funcionales
+
+Página con una sección de las películas mejor valoradas. 
+Filtro para ordenar las películas por valoración.
+
+#### Requisitos API
+
+- Endpoint: `GET /movies/top-rated`
+- Query params: 
+  - `limit`, con el número de películas a mostrar
+- Response: Lista de películas, ordenadas por valoración.
+
+___
 
 ### Ver próximos estrenos
 
