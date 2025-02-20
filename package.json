@@ -7,8 +7,8 @@
     "build": "tsc",
     "start": "npx ts-node ./src/app.ts",
     "dev": "nodemon --exec ts-node ./src/app.ts",
-    "test": "jest",
-    "test:watch": "jest --watch"
+    "test": "jest --forceExit --detectOpenHandles --runInBand",
+    "test:watch": "jest --forceExit --detectOpenHandles --watchAll"
   },
   "dependencies": {
     "@types/express": "^5.0.0",
