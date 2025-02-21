@@ -10,8 +10,7 @@ export class DBClient {
                     throw err
                 } else {
                     const sqlCreate =
-                        `CREATE TABLE IF NOT EXISTS movies
-                         (
+                        `CREATE TABLE IF NOT EXISTS movies (
                              id           INTEGER PRIMARY KEY AUTOINCREMENT,
                              title        TEXT,
                              release_date TEXT,

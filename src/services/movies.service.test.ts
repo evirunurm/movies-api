@@ -24,7 +24,7 @@ describe('Movies Service', () => {
                 new Movie('Unpopular Movie', new Date('2021-07-04'), 1),
                 new Movie('Popular Movie', new Date('2015-05-05'), 30),
             ]
-            moviesRepository.getPopularMovies = jest.fn().mockResolvedValue(movies)
+            moviesRepository.getMovies = jest.fn().mockResolvedValue(movies)
             const popularMovies = (await moviesService.getPopularMovies()).results
 
             expect(popularMovies.length).toBe(movies.length)
@@ -33,5 +33,24 @@ describe('Movies Service', () => {
             expect(popularMovies[popularMovies.length - 1].title).toBe('Unpopular Movie')
         })
 
+        it('should get a default maximum amount of 10 most popular movies', async () => {
+            const movies = Array.from({length: 20}, (_, i) => new Movie(`Movie ${i}`, new Date(), i))
+            moviesRepository.getMovies = jest.fn().mockResolvedValue(movies)
+            const popularMovies = (await moviesService.getPopularMovies()).results
+
+            expect(popularMovies.length).toBe(10)
+            expect(popularMovies[0].title).toBe('Movie 19')
+            expect(popularMovies[popularMovies.length - 1].title).toBe('Movie 10')
+        })
+
+        it('should get the amount of most popular movies, if specified', async () => {
+            const movies = Array.from({length: 20}, (_, i) => new Movie(`Movie ${i}`, new Date(), i))
+            moviesRepository.getMovies = jest.fn().mockResolvedValue(movies)
+            const popularMovies = (await moviesService.getPopularMovies()).results
+
+            expect(popularMovies.length).toBe(10)
+            expect(popularMovies[0].title).toBe('Movie 19')
+            expect(popularMovies[popularMovies.length - 1].title).toBe('Movie 10')
+        })
     })
 })
