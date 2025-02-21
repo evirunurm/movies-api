@@ -7,7 +7,7 @@ describe('Top-Rated Movies', () => {
             .get('/api/movies/top-rated')
 
         expect(response.status).toEqual(200)
-        expect(response.body).toHaveProperty('results')
+        expect(response.body).toHaveProperty('data')
     })
 
     it('should return the correct body if specified a limited amount of movies', async () => {
@@ -15,7 +15,7 @@ describe('Top-Rated Movies', () => {
             .get('/api/movies/top-rated?limit=5')
 
         expect(response.status).toEqual(200)
-        expect(response.body).toHaveProperty('results')
-        expect(response.body.results.length).toBe(5)
+        expect(response.body).toHaveProperty('data')
+        expect(response.body.data.length).toBe(5)
     })
 })

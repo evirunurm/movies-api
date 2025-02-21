@@ -1,6 +1,6 @@
 ## Funcionalidades:
 
-### Ver las películas más populares
+### ✅ Ver las películas más populares
 
 Los usuarios pueden ver una lista de las películas más populares basadas en las calificaciones y el número de visualizaciones.
 
@@ -16,9 +16,21 @@ Filtro para ordenar las películas por popularidad.
   - `limit`, con el número de películas a mostrar.
 - Response: Lista de películas, ordenadas por popularidad.
 
+``` json
+{
+  data: [
+    {
+      title: "The Shawshank Redemption",
+      popularity: 1,
+      rating: 9.3,
+    }
+  ]
+}
+```
+
 ___
 
-### Ver las películas mejor valoradas
+### ✅ Ver las películas mejor valoradas
 
 Los usuarios pueden ver una lista de las películas mejor valoradas según las críticas y puntuaciones.
 
@@ -31,22 +43,72 @@ Filtro para ordenar las películas por valoración.
 
 - Endpoint: `GET /movies/top-rated`
 - Query params: 
-  - `limit`, con el número de películas a mostrar
+  - `limit`, con el número de películas a mostrar.
 - Response: Lista de películas, ordenadas por valoración.
+
+``` json
+{
+  data: [
+    {
+      title: "The Shawshank Redemption",
+      popularity: 1,
+      rating: 9.3,
+    }
+  ]
+}
+```
 
 ___
 
-### Ver próximos estrenos
+### 🕐 Ver próximos estrenos
 
 Los usuarios pueden ver una lista de las películas que se estrenarán próximamente.
 
-**Requisitos**: Página con una sección dedicada a los próximos estrenos. Filtro para ordenar las películas por fecha de estreno. Paginación para navegar entre las películas.
+#### Requisitos funcionales
+
+Página con una sección dedicada a los próximos estrenos. 
+Filtro para ordenar las películas por fecha de estreno. 
+Paginación para navegar entre las películas.
+
+#### Requisitos API
+
+- Endpoint: `GET /movies/new-releases`
+- Query params:
+  - `order`, Orden de las películas por fecha de estreno (`asc` para ascendente, `desc` para descendente).
+  - `page`, número de página.
+  - `perPage`, número de películas por página.
+- Response: Lista de películas consideradas como próximos estrenos.
+
+``` json
+{
+  data: [
+    {
+      title: "The Shawshank Redemption",
+      popularity: 1,
+      rating: 9.3,
+    }
+  ],
+  pagination: {
+    "totalPages": 10,
+    "currentPage": 2,
+    "perPage": 10,
+    "next": "/movies/new-releases?page=3&perPage=10",
+    "prev": "/movies/new-releases?page=1&perPage=10"
+  }
+}
+```
+___
 
 ### Guardar películas favoritas
 
 Los usuarios pueden guardar sus películas favoritas en una lista personalizada.
 
-**Requisitos**: Botón para agregar/quitar una película a/de la lista de favoritos. Página de perfil de usuario con la lista de películas favoritas.
+#### Requisitos funcionales
+
+Botón para agregar/quitar una película a/de la lista de favoritos. Página de perfil de usuario con la lista de películas favoritas.
+
+#### Requisitos API
+
 
 ### Detalle de la película
 

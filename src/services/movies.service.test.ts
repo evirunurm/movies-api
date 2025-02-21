@@ -26,7 +26,7 @@ describe('Movies Service', () => {
                 new Movie('Popular Movie', new Date('2015-05-05'), 30),
             ]
             moviesRepository.getMovies = jest.fn().mockResolvedValue(movies)
-            const popularMovies = (await moviesService.getPopular()).results
+            const popularMovies = (await moviesService.getPopular()).data
 
             expect(popularMovies.length).toBe(movies.length)
             // Here we could make a custom matcher to compare the popularity of the movies
@@ -37,7 +37,7 @@ describe('Movies Service', () => {
         it('should get a default maximum amount of 10 most popular movies', async () => {
             const movies = Array.from({length: 20}, (_, i) => new Movie(`Movie ${i}`, new Date(), i))
             moviesRepository.getMovies = jest.fn().mockResolvedValue(movies)
-            const popularMovies = (await moviesService.getPopular()).results
+            const popularMovies = (await moviesService.getPopular()).data
 
             expect(popularMovies.length).toBe(10)
             expect(popularMovies[0].title).toBe('Movie 19')
@@ -47,7 +47,7 @@ describe('Movies Service', () => {
         it('should get the amount of most popular movies, if specified', async () => {
             const movies = Array.from({length: 20}, (_, i) => new Movie(`Movie ${i}`, new Date(), i))
             moviesRepository.getMovies = jest.fn().mockResolvedValue(movies)
-            const popularMovies = (await moviesService.getPopular(5)).results
+            const popularMovies = (await moviesService.getPopular(5)).data
 
             expect(popularMovies.length).toBe(5)
             expect(popularMovies[0].title).toBe('Movie 19')
@@ -61,7 +61,7 @@ describe('Movies Service', () => {
                 MovieMother.aMovieWithRating(i, i))
             moviesRepository.getMovies = jest.fn().mockResolvedValue(movies)
 
-            const topRatedMovies = (await moviesService.getTopRated()).results
+            const topRatedMovies = (await moviesService.getTopRated()).data
 
             expect(topRatedMovies.length).toBe(movies.length)
             expect(topRatedMovies[0].title).toBe('Movie 4')
@@ -73,7 +73,7 @@ describe('Movies Service', () => {
                 MovieMother.aMovieWithRating(i, i))
             moviesRepository.getMovies = jest.fn().mockResolvedValue(movies)
 
-            const topRatedMovies = (await moviesService.getTopRated()).results
+            const topRatedMovies = (await moviesService.getTopRated()).data
 
             expect(topRatedMovies.length).toBe(10)
             expect(topRatedMovies[0].title).toBe('Movie 14')
@@ -85,7 +85,7 @@ describe('Movies Service', () => {
                 MovieMother.aMovieWithRating(i, i))
             moviesRepository.getMovies = jest.fn().mockResolvedValue(movies)
 
-            const topRatedMovies = (await moviesService.getTopRated(5)).results
+            const topRatedMovies = (await moviesService.getTopRated(5)).data
 
             expect(topRatedMovies.length).toBe(5)
             expect(topRatedMovies[0].title).toBe('Movie 9')
