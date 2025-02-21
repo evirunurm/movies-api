@@ -46,11 +46,11 @@ describe('Movies Service', () => {
         it('should get the amount of most popular movies, if specified', async () => {
             const movies = Array.from({length: 20}, (_, i) => new Movie(`Movie ${i}`, new Date(), i))
             moviesRepository.getMovies = jest.fn().mockResolvedValue(movies)
-            const popularMovies = (await moviesService.getPopularMovies()).results
+            const popularMovies = (await moviesService.getPopularMovies(5)).results
 
-            expect(popularMovies.length).toBe(10)
+            expect(popularMovies.length).toBe(5)
             expect(popularMovies[0].title).toBe('Movie 19')
-            expect(popularMovies[popularMovies.length - 1].title).toBe('Movie 10')
+            expect(popularMovies[popularMovies.length - 1].title).toBe('Movie 15')
         })
     })
 })
