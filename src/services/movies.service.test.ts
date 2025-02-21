@@ -1,5 +1,4 @@
 import {MoviesService} from "./movies.service";
-import Movie from "../domain/movie";
 import {MoviesRepository} from "../db/repositories/movies.repository";
 import {Database} from "sqlite3";
 import {MovieMother} from "../../test/builders/moviesMother";
@@ -19,23 +18,20 @@ describe('Movies Service', () => {
 
     describe('when sorting by popularity', () => {
         it('should get a list of movies, ordered by popularity', async () => {
-            const movies = [
-                new Movie('Random Movie', new Date('2021-07-04'), 5),
-                new Movie('Random Movie 2', new Date('2015-05-05'), 10),
-                new Movie('Unpopular Movie', new Date('2021-07-04'), 1),
-                new Movie('Popular Movie', new Date('2015-05-05'), 30),
-            ]
+            const movies = Array.from({length: 5}, (_, i) =>
+                MovieMother.aMovieWithPopularity(i, i))
             moviesRepository.getMovies = jest.fn().mockResolvedValue(movies)
+
             const popularMovies = (await moviesService.getPopular()).data
 
             expect(popularMovies.length).toBe(movies.length)
-            // Here we could make a custom matcher to compare the popularity of the movies
-            expect(popularMovies[0].title).toBe('Popular Movie')
-            expect(popularMovies[popularMovies.length - 1].title).toBe('Unpopular Movie')
+            expect(popularMovies[0].title).toBe('Movie 4')
+            expect(popularMovies[popularMovies.length - 1].title).toBe('Movie 0')
         })
 
         it('should get a default maximum amount of 10 most popular movies', async () => {
-            const movies = Array.from({length: 20}, (_, i) => new Movie(`Movie ${i}`, new Date(), i))
+            const movies = Array.from({length: 20}, (_, i) =>
+                MovieMother.aMovieWithPopularity(i, i))
             moviesRepository.getMovies = jest.fn().mockResolvedValue(movies)
             const popularMovies = (await moviesService.getPopular()).data
 
@@ -45,7 +41,8 @@ describe('Movies Service', () => {
         })
 
         it('should get the amount of most popular movies, if specified', async () => {
-            const movies = Array.from({length: 20}, (_, i) => new Movie(`Movie ${i}`, new Date(), i))
+            const movies = Array.from({length: 20}, (_, i) =>
+                MovieMother.aMovieWithPopularity(i, i))
             moviesRepository.getMovies = jest.fn().mockResolvedValue(movies)
             const popularMovies = (await moviesService.getPopular(5)).data
 

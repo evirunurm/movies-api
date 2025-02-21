@@ -1,6 +1,6 @@
-import Movie from "../../domain/movie";
 import {MoviesRepository} from "./movies.repository";
 import {Database} from "sqlite3";
+import {MovieMother} from "../../../test/builders/moviesMother";
 
 // We mock the sqlite3 module to avoid using a real database
 // This test suite is run in a memory database
@@ -24,7 +24,8 @@ describe('Movies Repository', () => {
     })
 
     it('should get the stored movies', async () => {
-        const movies = Array.from({length: 20}, (_, i) => new Movie(`Movie ${i}`, new Date(), i))
+        const movies = Array.from({length: 20}, (_, i) =>
+            MovieMother.aMovieWithPopularity(i, i))
         db.all = jest.fn().mockImplementation((_query, callback) => {
             callback(null, movies)
         })
