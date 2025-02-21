@@ -4,7 +4,7 @@ import {MoviesService} from "../services/movies.service";
 import {MoviesRepository} from "../db/repositories/movies.repository";
 import {DBClient} from "../db/dbClient";
 
-class MoviesRoute {
+class MoviesRoutes {
     public router = express.Router();
     private db = new DBClient();
     private moviesRepository = new MoviesRepository(this.db.connect());
@@ -21,4 +21,4 @@ class MoviesRoute {
     }
 }
 
-export default new MoviesRoute().router;
+export default new MoviesRoutes().router;

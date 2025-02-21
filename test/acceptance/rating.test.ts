@@ -8,6 +8,7 @@ describe('Top-Rated Movies', () => {
 
         expect(response.status).toEqual(200)
         expect(response.body).toHaveProperty('data')
+        expect(response.body).not.toHaveProperty('pagination')
     })
 
     it('should return the correct body if specified a limited amount of movies', async () => {
@@ -16,6 +17,7 @@ describe('Top-Rated Movies', () => {
 
         expect(response.status).toEqual(200)
         expect(response.body).toHaveProperty('data')
+        expect(response.body).not.toHaveProperty('pagination')
         expect(response.body.data.length).toBe(5)
     })
 })

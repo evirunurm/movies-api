@@ -89,4 +89,37 @@ describe('Movies Service', () => {
             expect(topRatedMovies[topRatedMovies.length - 1].title).toBe('Movie 5')
         })
     })
+
+    describe('when getting new releases', () => {
+        it('should get not yet released movies ordered by release date in descending order by default', async () => {
+            const movies = Array.from({length: 5}, (_, i) => {
+                const date = new Date()
+                date.setDate(date.getDate() + i)
+                return MovieMother.aMovieWithReleaseDate(date, i)
+            })
+            moviesRepository.getMovies = jest.fn().mockResolvedValue(movies)
+
+            const newReleases = (await moviesService.getNewReleases()).data
+
+            expect(newReleases.length).toBe(movies.length - 1)
+            expect(newReleases[0].title).toBe('Movie 4')
+            expect(newReleases[newReleases.length - 1].title).toBe('Movie 1')
+        })
+
+        it('should get not yet released movies ordered by release date in ascending order', async () => {
+            const today = new Date()
+            const movies = Array.from({length: 5}, (_, i) => {
+                const releaseDate = new Date()
+                releaseDate.setDate(today.getDate() + i)
+                return MovieMother.aMovieWithReleaseDate(releaseDate, i)
+            })
+            moviesRepository.getMovies = jest.fn().mockResolvedValue(movies)
+
+            const newReleases = (await moviesService.getNewReleases(true)).data
+
+            expect(newReleases.length).toBe(movies.length - 1)
+            expect(newReleases[0].title).toBe('Movie 1')
+            expect(newReleases[newReleases.length - 1].title).toBe('Movie 4')
+        })
+    })
 })

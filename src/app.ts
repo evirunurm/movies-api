@@ -1,5 +1,5 @@
 import express from 'express';
-import movieRoutes from './routes/movies.route';
+import movieRoutes from './routes/movies.routes';
 import globalRoutes from './routes/routes';
 
 class App {

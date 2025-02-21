@@ -9,7 +9,7 @@ class GlobalRoutes {
 
     private initializeRoutes() {
         this.router.get('/', (req: express.Request, res: express.Response) => {
-            res.send('Welcome to the movie API');
+            res.send('Welcome to the movies API ✨');
         });
     }
 }
