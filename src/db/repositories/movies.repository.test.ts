@@ -1,10 +1,10 @@
-import {MoviesService} from "../../src/services/movies.service";
-import Movie from "../../src/domain/movie";
-import {MoviesRepository} from "../../src/db/repositories/movies.repository";
+import {MoviesService} from "../../services/movies.service";
+import Movie from "../../domain/movie";
+import {MoviesRepository} from "./movies.repository";
 import {Database} from "sqlite3";
 
 // We mock the sqlite3 module to avoid using a real database
-// This test is run in a memory database
+// This test suite is run in a memory database
 jest.mock("sqlite3", () => {
     return {
         Database: jest.fn().mockImplementation(() => ({
@@ -20,11 +20,11 @@ describe('Movies Repository', () => {
     let db: Database
 
     beforeEach(() => {
-        db = new Database("::memory:") as jest.Mocked<Database>
+        db = new Database("::memory::") as jest.Mocked<Database>
         moviesRepository = new MoviesRepository(db)
     })
 
-    it('should get all the stored movies', async () => {
+    it('should get the stored movies', async () => {
         const movies = [
             new Movie('Movie 1', new Date('2021-07-04'), 5),
             new Movie('Movie 2', new Date('2015-05-05'), 10),
@@ -35,7 +35,18 @@ describe('Movies Repository', () => {
             callback(null, movies)
         })
 
-        const popularMovies = await moviesRepository.getMovies()
+        const popularMovies = await moviesRepository.getPopularMovies()
+
+        expect(popularMovies.length).toBe(movies.length)
+    })
+
+    it('should get a maximum amount of 10 movies if not specified the limit', async () => {
+       const movies = Array.from({length: 20}, (_, i) => new Movie(`Movie ${i}`, new Date(), i))
+        db.all = jest.fn().mockImplementation((_query, _params, callback) => {
+            callback(null, movies)
+        })
+
+        const popularMovies = await moviesRepository.getPopularMovies()
 
         expect(popularMovies.length).toBe(movies.length)
     })

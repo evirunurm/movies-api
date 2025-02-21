@@ -4,24 +4,25 @@ import {Database} from "sqlite3";
 export class MoviesRepository {
     constructor (private dbClient: Database) {}
 
-    public async getMovies (): Promise<Movie[]> {
-        const query = 'SELECT * FROM movies';
+    public async getPopularMovies (limit: number = 10): Promise<Movie[]> {
+        const query = 'SELECT * FROM movies ORDER BY popularity LIMIT ?';
+
         return new Promise((resolve, reject) => {
-            this.dbClient.all(query, [], (err, rows) => {
+            this.dbClient.all(query, [limit], (err, rows: any) => {
                 if (err) {
-                    reject(err);
-                } else {
-                    const movies = rows
-                        .map(row => {
-                            const movieRow = row as Movie;
-                            return new Movie(
-                                    movieRow.title,
-                                    new Date(movieRow.releaseDate),
-                                    movieRow.popularity)
-                        });
-                    resolve(movies);
+                    reject(err)
+                    return
                 }
+                resolve(rows.map(this.mapRowToMovie))
             });
         });
+    }
+
+    private mapRowToMovie (row: any): Movie {
+        return new Movie(
+            row.title,
+            new Date(row.releaseDate),
+            row.popularity
+        );
     }
 }
