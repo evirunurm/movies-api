@@ -5,9 +5,15 @@ export class MoviesController {
 
     constructor(private service: MoviesService) {}
 
-    public async getPopularMovies(req: Request, res: Response) {
+    public async getPopular(req: Request, res: Response) {
         const limit: number | null  = req.query.limit ? parseInt(req.query.limit as string) : null
         const popularMovies = await this.service.getPopular(limit);
         res.send(popularMovies);
+    }
+
+    public async getTopRated(req: Request, res: Response) {
+        const limit: number | null  = req.query.limit ? parseInt(req.query.limit as string) : null
+        const topRatedMovies = await this.service.getTopRated(limit);
+        res.send(topRatedMovies);
     }
 }

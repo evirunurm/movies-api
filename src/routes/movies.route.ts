@@ -16,7 +16,8 @@ class MoviesRoute {
     }
 
     private initializeRoutes() {
-        this.router.get('/popular', this.moviesController.getPopularMovies.bind(this.moviesController));
+        this.router.get('/popular', this.moviesController.getPopular.bind(this.moviesController));
+        this.router.get('/top-rated', this.moviesController.getTopRated.bind(this.moviesController));
     }
 }
 
