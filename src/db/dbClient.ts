@@ -1,10 +1,10 @@
 import sqlite3 from 'sqlite3';
 
-const DB_FILE = 'db.sqlite';
-
 export class DBClient {
+    private readonly DB_FILE = 'db.sqlite';
+
     connect() {
-        const db = new sqlite3.Database(DB_FILE, (err:any) => {
+        const db = new sqlite3.Database(this.DB_FILE, (err:any) => {
                 if (err) {
                     console.error(err.message)
                     throw err
@@ -14,7 +14,8 @@ export class DBClient {
                              id           INTEGER PRIMARY KEY AUTOINCREMENT,
                              title        TEXT,
                              release_date TEXT,
-                             popularity   INTEGER
+                             popularity   INTEGER,
+                             rating       INTEGER
                          )`;
                     db.run(sqlCreate, err => {
                         if (err) {
