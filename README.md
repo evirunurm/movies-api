@@ -60,7 +60,7 @@ Filtro para ordenar las películas por valoración.
 
 ___
 
-### 🕐 Ver próximos estrenos
+### ✅ Ver próximos estrenos
 
 Los usuarios pueden ver una lista de las películas que se estrenarán próximamente.
 
@@ -99,16 +99,46 @@ Paginación para navegar entre las películas.
 ```
 ___
 
-### Guardar películas favoritas
+### 🕐 Guardar películas favoritas
 
 Los usuarios pueden guardar sus películas favoritas en una lista personalizada.
 
 #### Requisitos funcionales
 
-Botón para agregar/quitar una película a/de la lista de favoritos. Página de perfil de usuario con la lista de películas favoritas.
+Botón para agregar/quitar una película a/de la lista de favoritos. 
+Página de perfil de usuario con la lista de películas favoritas.
 
 #### Requisitos API
 
+##### Guardar película favorita
+
+- Endpoint: `POST /user/:id/favorites`
+- Response: 201
+
+##### Quitar película favorita
+
+- Endpoint: `DELETE /user/:id/favorites`
+- Response: 204
+
+##### Ver películas favoritas
+
+- Endpoint `GET /user/:id/favorites`
+- Response: Lista de películas favoritas del usuario.
+
+``` json
+{
+  data: [
+    {
+      title: "The Shawshank Redemption",
+      popularity: 1,
+      rating: 9.3,
+      favorited-date: "2021-09-01"
+    }
+  ]
+}
+```
+
+___
 
 ### Detalle de la película
 
