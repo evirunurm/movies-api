@@ -5,7 +5,8 @@ import {RatingService} from "../services/movies/rating/rating.service";
 
 export class MoviesController {
 
-    constructor(private topRatedMoviesService: RatingService,
+    constructor(
+        private topRatedMoviesService: RatingService,
         private popularMoviesService: PopularityService,
         private newReleasesService: NewReleasesService) {}
 

@@ -9,9 +9,6 @@ describe('Popular Movies Service', () => {
     let moviesRepository: MoviesRepository
 
     beforeEach(() => {
-        // Instead of an actual instance of database
-        // We use a Dummy whose only purpose is to satisfy the dependency
-        // It's never going to get called
         const db = jest.fn() as unknown as Database
         moviesRepository = new MoviesRepository(db)
         popularMoviesService = new PopularityService(moviesRepository)

@@ -19,7 +19,7 @@ export class DBSeeder {
     }
 
     static async seedBasicData(db: Database) {
-        const sqlInsert = `INSERT INTO movies (title, release_date, popularity, rating)
+        const sqlInsertMovies = `INSERT INTO movies (title, release_date, popularity, rating)
                            VALUES ('The Shawshank Redemption', '1994-09-10', 678, 9.3),
                                   ('The Godfather', '1972-03-24', 600, 9.2),
                                   ('The Dark Knight', '2008-07-18', 583, 9.0),
@@ -30,15 +30,25 @@ export class DBSeeder {
                                   ('Beetlejuice 3', '2027-02-04', 666, 9.5),
                                   ('Beetlejuice 4', '2028-02-04', 456, 9.8),
                                   ('Beetlejuice 5', '2029-02-04', 784, 9.2),
-                                  ('Beetlejuice 6', '2030-02-04', 654, 8.8)`
+                                  ('Beetlejuice 6', '2030-02-04', 654, 8.8);`
+        const sqlInsertUsers = `INSERT INTO users (email, name)
+                                VALUES ('email@gmail.com', 'Jane Doe');`
 
         return new Promise((resolve, reject) => {
-            db.run(sqlInsert, (result: RunResult, err: Error) => {
-                if (err) {
-                    reject(err)
-                    return
-                }
-                resolve(result)
+            db.serialize(() => {
+                db.run(sqlInsertMovies, (err: Error) => {
+                    if (err) {
+                        reject(err)
+                        console.error(err)
+                    }
+                })
+                db.run(sqlInsertUsers,  (err: Error) => {
+                    if (err) {
+                        reject(err)
+                        console.error(err)
+                    }
+                    resolve(null)
+                })
             })
         })
     }
