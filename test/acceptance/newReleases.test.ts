@@ -1,7 +1,7 @@
 import request from 'supertest'
 import app from '../../src/app'
 
-describe('New Releases Movies', () => {
+describe('New-Releases Movies', () => {
     it('should return the correct body', async () => {
         const response = await request(app)
             .get('/api/movies/new-releases')
@@ -13,14 +13,14 @@ describe('New Releases Movies', () => {
 
     it('should return the correct body if specified an order', async () => {
         const response = await request(app)
-            .get('/api/movies/new-releases?order=desc')
+            .get('/api/movies/new-releases?order=asc')
 
         expect(response.status).toEqual(200)
         expect(response.body).toHaveProperty('data')
         expect(response.body).toHaveProperty('pagination')
     })
 
-    it('should return the correct body if specified a pagination', async () => {
+    it('should return the correct body and pagination if specified a pagination', async () => {
         const response = await request(app)
             .get('/api/movies/new-releases?page=1&perPage=5')
 

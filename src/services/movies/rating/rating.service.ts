@@ -1,15 +1,15 @@
-import {MoviesRepository} from "../../db/repositories/movies.repository";
-import {MoviesView} from "../../domain/moviesView";
-import Movie from "../../domain/movie";
+import {MoviesRepository} from "../../../db/repositories/movies.repository";
+import {MoviesView} from "../../../domain/moviesView";
+import Movie from "../../../domain/movie";
 
-export class PopularMoviesService {
+export class RatingService {
     private readonly defaultLimit: number = 10
 
     constructor (private repository: MoviesRepository) {}
 
     async get(limit: number | undefined = undefined): Promise<MoviesView> {
         const movies = await this.repository.getAll()
-        const sortedMovies = this.sortByProperty(movies, 'popularity')
+        const sortedMovies = this.sortByProperty(movies, 'rating')
         return new MoviesView(
             sortedMovies.slice(0, limit || this.defaultLimit)
         )

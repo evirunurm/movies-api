@@ -1,12 +1,12 @@
 import {Request, Response} from 'express';
-import {PopularMoviesService} from "../services/popularMovies/popularMovies.service";
-import {NewReleasesService} from "../services/newReleases/newReleases.service";
-import {TopRatedMoviesService} from "../services/topRatedMovies/topRatedMovies.service";
+import {PopularityService} from "../services/movies/popularity/popularity.service";
+import {NewReleasesService} from "../services/movies/newReleases/newReleases.service";
+import {RatingService} from "../services/movies/rating/rating.service";
 
 export class MoviesController {
 
-    constructor(private topRatedMoviesService: TopRatedMoviesService,
-        private popularMoviesService: PopularMoviesService,
+    constructor(private topRatedMoviesService: RatingService,
+        private popularMoviesService: PopularityService,
         private newReleasesService: NewReleasesService) {}
 
     public async getPopular(req: Request, res: Response) {
@@ -22,10 +22,11 @@ export class MoviesController {
     }
 
     public async getNewReleases(req: Request, res: Response) {
-        const limit: number | undefined  = req.query.limit ? parseInt(req.query.limit as string) : undefined
-        const isAsc: boolean = req.query.order == 'asc'
+        const isAsc = req.query.order == 'asc'
+        const page = req.query.page ? parseInt(req.query.page as string) : 1
+        const perPage = req.query.perPage ? parseInt(req.query.perPage as string) : undefined
 
-        const newReleasesMovies = await this.newReleasesService.get(isAsc, limit);
+        const newReleasesMovies = await this.newReleasesService.get({isAsc, perPage, page});
         res.send(newReleasesMovies);
     }
 }
