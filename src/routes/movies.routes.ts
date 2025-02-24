@@ -1,15 +1,19 @@
 import express from 'express';
 import {MoviesController} from "../controllers/movies.controller";
-import {MoviesService} from "../services/movies.service";
 import {MoviesRepository} from "../db/repositories/movies.repository";
 import {DBClient} from "../db/dbClient";
+import {TopRatedMoviesService} from "../services/topRatedMovies/topRatedMovies.service";
+import {NewReleasesService} from "../services/newReleases/newReleases.service";
+import {PopularMoviesService} from "../services/popularMovies/popularMovies.service";
 
 class MoviesRoutes {
     public router = express.Router()
     private db = new DBClient()
     private moviesRepository = new MoviesRepository(this.db.connect())
-    private moviesService = new MoviesService(this.moviesRepository)
-    private moviesController = new MoviesController(this.moviesService)
+    private topRatedMoviesService = new TopRatedMoviesService(this.moviesRepository)
+    private newReleasesService = new NewReleasesService(this.moviesRepository)
+    private popularMoviesService = new PopularMoviesService(this.moviesRepository)
+    private moviesController = new MoviesController(this.topRatedMoviesService, this.popularMoviesService, this.newReleasesService)
 
     constructor() {
         this.initializeRoutes()
