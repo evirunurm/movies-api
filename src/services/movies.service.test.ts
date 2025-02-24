@@ -18,9 +18,12 @@ describe('Movies Service', () => {
 
     describe('when sorting by popularity', () => {
         it('should get a list of movies, ordered by popularity', async () => {
-            const movies = Array.from({length: 5}, (_, i) =>
-                MovieMother.aMovieWithPopularity(i, i))
-            moviesRepository.getMovies = jest.fn().mockResolvedValue(movies)
+            const movies = Array.from({length: 5}, (_, index) =>
+                MovieMother.aMovie({
+                    nameIdentifier: index,
+                    popularity: index
+                }))
+            moviesRepository.getAll = jest.fn().mockResolvedValue(movies)
 
             const popularMovies = (await moviesService.getPopular()).data
 
@@ -30,9 +33,12 @@ describe('Movies Service', () => {
         })
 
         it('should get a default maximum amount of 10 most popular movies', async () => {
-            const movies = Array.from({length: 20}, (_, i) =>
-                MovieMother.aMovieWithPopularity(i, i))
-            moviesRepository.getMovies = jest.fn().mockResolvedValue(movies)
+            const movies = Array.from({length: 20}, (_, index) =>
+                MovieMother.aMovie({
+                    nameIdentifier: index,
+                    popularity: index
+                }))
+            moviesRepository.getAll = jest.fn().mockResolvedValue(movies)
             const popularMovies = (await moviesService.getPopular()).data
 
             expect(popularMovies.length).toBe(10)
@@ -41,9 +47,12 @@ describe('Movies Service', () => {
         })
 
         it('should get the amount of most popular movies, if specified', async () => {
-            const movies = Array.from({length: 20}, (_, i) =>
-                MovieMother.aMovieWithPopularity(i, i))
-            moviesRepository.getMovies = jest.fn().mockResolvedValue(movies)
+            const movies = Array.from({length: 20}, (_, index) =>
+                MovieMother.aMovie({
+                    nameIdentifier: index,
+                    popularity: index
+                }))
+            moviesRepository.getAll = jest.fn().mockResolvedValue(movies)
             const popularMovies = (await moviesService.getPopular(5)).data
 
             expect(popularMovies.length).toBe(5)
@@ -54,9 +63,12 @@ describe('Movies Service', () => {
 
     describe('when sorting by top rated', () => {
         it('should get a list of movies, ordered by top-rated', async () => {
-            const movies = Array.from({length: 5}, (_, i) =>
-                MovieMother.aMovieWithRating(i, i))
-            moviesRepository.getMovies = jest.fn().mockResolvedValue(movies)
+            const movies = Array.from({length: 5}, (_, index) =>
+                MovieMother.aMovie({
+                    nameIdentifier: index,
+                    rating: index}
+                ))
+            moviesRepository.getAll = jest.fn().mockResolvedValue(movies)
 
             const topRatedMovies = (await moviesService.getTopRated()).data
 
@@ -66,9 +78,12 @@ describe('Movies Service', () => {
         })
 
         it('should get a default maximum amount of 10 top rated movies', async () => {
-            const movies = Array.from({length: 15}, (_, i) =>
-                MovieMother.aMovieWithRating(i, i))
-            moviesRepository.getMovies = jest.fn().mockResolvedValue(movies)
+            const movies = Array.from({length: 15}, (_, index) =>
+                MovieMother.aMovie({
+                    nameIdentifier: index,
+                    rating: index
+                }))
+            moviesRepository.getAll = jest.fn().mockResolvedValue(movies)
 
             const topRatedMovies = (await moviesService.getTopRated()).data
 
@@ -79,8 +94,11 @@ describe('Movies Service', () => {
 
         it('should get the amount of top rated movies, if specified', async () => {
             const movies = Array.from({length: 10}, (_, i) =>
-                MovieMother.aMovieWithRating(i, i))
-            moviesRepository.getMovies = jest.fn().mockResolvedValue(movies)
+                MovieMother.aMovie({
+                    nameIdentifier: i,
+                    rating: i
+                }))
+            moviesRepository.getAll = jest.fn().mockResolvedValue(movies)
 
             const topRatedMovies = (await moviesService.getTopRated(5)).data
 
@@ -92,34 +110,62 @@ describe('Movies Service', () => {
 
     describe('when getting new releases', () => {
         it('should get not yet released movies ordered by release date in descending order by default', async () => {
-            const movies = Array.from({length: 5}, (_, i) => {
-                const date = new Date()
-                date.setDate(date.getDate() + i)
-                return MovieMother.aMovieWithReleaseDate(date, i)
-            })
-            moviesRepository.getMovies = jest.fn().mockResolvedValue(movies)
+            const amountNewReleases = 5
+            moviesRepository.getNewReleasesPaginated = jest.fn().mockResolvedValue(
+                Array.from({length: amountNewReleases}, (_, index) => {
+                    const releaseDate = new Date()
+                    releaseDate.setDate(releaseDate.getDate() + index + 1)
+                    return MovieMother.aMovie({
+                        nameIdentifier: index,
+                        releaseDate
+                    })
+                }).sort((a, b) => b.releaseDate.getTime() - a.releaseDate.getTime())
+            )
 
             const newReleases = (await moviesService.getNewReleases()).data
 
-            expect(newReleases.length).toBe(movies.length - 1)
+            expect(newReleases.length).toBe(amountNewReleases)
             expect(newReleases[0].title).toBe('Movie 4')
-            expect(newReleases[newReleases.length - 1].title).toBe('Movie 1')
+            expect(newReleases[newReleases.length - 1].title).toBe('Movie 0')
         })
 
         it('should get not yet released movies ordered by release date in ascending order', async () => {
+            const amountNewReleases = 5
             const today = new Date()
-            const movies = Array.from({length: 5}, (_, i) => {
+            moviesRepository.getNewReleasesPaginated = jest.fn().mockResolvedValue(
+                Array.from({length: amountNewReleases}, (_, index) => {
                 const releaseDate = new Date()
-                releaseDate.setDate(today.getDate() + i)
-                return MovieMother.aMovieWithReleaseDate(releaseDate, i)
-            })
-            moviesRepository.getMovies = jest.fn().mockResolvedValue(movies)
+                releaseDate.setDate(today.getDate() + index + 1)
+                return MovieMother.aMovie({
+                    nameIdentifier: index,
+                    releaseDate
+                })
+            }))
 
             const newReleases = (await moviesService.getNewReleases(true)).data
 
-            expect(newReleases.length).toBe(movies.length - 1)
-            expect(newReleases[0].title).toBe('Movie 1')
+            expect(newReleases.length).toBe(amountNewReleases)
+            expect(newReleases[0].title).toBe('Movie 0')
             expect(newReleases[newReleases.length - 1].title).toBe('Movie 4')
+        })
+
+        it('should get paginated not yet released movies by default at page 1, with a limit of 10', async () => {
+            const today = new Date()
+            moviesRepository.getNewReleasesPaginated = jest.fn().mockResolvedValue(
+                Array.from({length: 15}, (_, index) => {
+                    const releaseDate = new Date()
+                    releaseDate.setDate(today.getDate() + index + 1)
+                    return MovieMother.aMovie({
+                        nameIdentifier: index,
+                        releaseDate
+                    })
+            }))
+
+            const result = await moviesService.getNewReleases()
+
+            expect(result.pagination.page).toBe(1)
+            expect(result.pagination.perPage).toBe(10)
+            expect(result.pagination.total).toBe(0)
         })
     })
 })

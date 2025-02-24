@@ -1,24 +1,34 @@
 import Movie from "../../src/domain/movie";
 
+type MovieConfiguration = {
+    rating?: number
+    popularity?: number
+    nameIdentifier?: number
+    releaseDate?: Date
+}
+
 export class MovieMother {
-    public static aMovieWithRating = (rating: number, index: number | null = null): Movie =>
-        new Movie(this.buildMovieName(index), new Date(), 10, rating)
 
-    public static aMovieWithTitle = (title: string): Movie =>
-        new Movie(title, new Date(), 10, 5)
-
-    public static aMovieWithPopularity = (popularity: number, index: number | null = null): Movie =>
-         new Movie(this.buildMovieName(index), new Date(), popularity, 5)
-
-    private static buildMovieName = (index: number | null = null): string =>
-        index !== null ? `Movie ${index}` : 'Default Movie'
-
-    public static aMovieReleasedNextYear = (index: number | null = null): Movie => {
-        const releaseDate = new Date();
-        releaseDate.setFullYear(releaseDate.getFullYear() + 1);
-        return new Movie(this.buildMovieName(index), releaseDate, 10, 5)
+    public static aMovie({
+        popularity,
+        rating,
+        nameIdentifier,
+        releaseDate
+    }: MovieConfiguration): Movie {
+        return new Movie(
+            this.buildMovieName(nameIdentifier),
+            releaseDate ?? new Date(),
+            popularity ?? 10,
+            rating ?? 5
+        )
     }
 
-    public static aMovieWithReleaseDate = (releaseDate: Date, index: number | null = null): Movie =>
-        new Movie(this.buildMovieName(index), releaseDate, 10, 5)
+    public static aMovieReleasedNextYear = (identifier: number | undefined = undefined): Movie => {
+        const releaseDate = new Date();
+        releaseDate.setFullYear(releaseDate.getFullYear() + 1);
+        return new Movie(this.buildMovieName(identifier), releaseDate, 10, 5)
+    }
+
+    private static buildMovieName = (identifier: number | undefined = undefined): string =>
+        identifier !== undefined ? `Movie ${identifier}` : 'Default Movie'
 }

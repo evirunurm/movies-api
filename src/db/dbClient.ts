@@ -1,29 +1,36 @@
-import sqlite3 from 'sqlite3';
+import {Database, RunResult} from 'sqlite3';
 
 export class DBClient {
-    private readonly DB_FILE = 'db.sqlite';
+    private readonly DB_FILE;
+
+    constructor(DB_FILE = 'db.sqlite') {
+        this.DB_FILE = DB_FILE
+    }
 
     connect() {
-        const db = new sqlite3.Database(this.DB_FILE, (err:any) => {
-                if (err) {
-                    console.error(err.message)
-                    throw err
-                } else {
-                    const sqlCreate =
-                        `CREATE TABLE IF NOT EXISTS movies (
+        const db = new Database(this.DB_FILE, async (err) => {
+            if (err) console.error(err.message)
+            await DBClient.createTables(db)
+        })
+        return db
+    }
+
+     static async createTables(db: Database) {
+         const sqlCreate = `CREATE TABLE IF NOT EXISTS movies (
                              id           INTEGER PRIMARY KEY AUTOINCREMENT,
                              title        TEXT,
                              release_date TEXT,
                              popularity   INTEGER,
                              rating       INTEGER
-                         )`;
-                    db.run(sqlCreate, err => {
-                        if (err) {
-                            return console.error(err.message);
-                        }
-                    });
+                         )`
+        return new Promise((resolve, reject) => {
+            db.run(sqlCreate, (result: RunResult, err: Error) => {
+                if (err) {
+                    reject(err)
+                    return
                 }
+                resolve(result)
             })
-        return db
+        })
     }
 }

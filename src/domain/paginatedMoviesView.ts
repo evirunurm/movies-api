@@ -5,7 +5,7 @@ import {MoviesView} from "./moviesView";
 export class PaginatedMoviesView extends MoviesView {
     constructor(
         data: Movie[],
-        public pagination: PaginationView | null = null
+        public pagination: PaginationView
     ) {
       super(data)
     }

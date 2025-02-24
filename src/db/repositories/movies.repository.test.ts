@@ -1,37 +1,37 @@
 import {MoviesRepository} from "./movies.repository";
 import {Database} from "sqlite3";
 import {MovieMother} from "../../../test/builders/moviesMother";
-
-// We mock the sqlite3 module to avoid using a real database
-// This test suite is run in a memory database
-jest.mock("sqlite3", () => {
-    return {
-        Database: jest.fn().mockImplementation(() => ({
-            all: jest.fn(),
-            run: jest.fn(),
-            close: jest.fn(),
-        })),
-    };
-})
+import {DBClient} from "../dbClient";
+import {DBSeeder} from "../seeder/dbSeeder";
 
 describe('Movies Repository', () => {
     let moviesRepository: MoviesRepository
     let db: Database
+    let dbClient: DBClient
 
-    beforeEach(() => {
-        db = new Database(":memory:") as jest.Mocked<Database>
+    beforeEach(async () => {
+        dbClient = new DBClient(':memory:')
+        db = dbClient.connect()
+        await DBClient.createTables(db)
         moviesRepository = new MoviesRepository(db)
     })
 
     it('should get the stored movies', async () => {
-        const movies = Array.from({length: 20}, (_, i) =>
-            MovieMother.aMovieWithPopularity(i, i))
-        db.all = jest.fn().mockImplementation((_query, callback) => {
-            callback(null, movies)
-        })
+        const movies = Array.from({length: 20}, (_, nameIdentifier) =>
+            MovieMother.aMovie({nameIdentifier}))
+        await DBSeeder.seedMovies(db, movies)
 
-        const popularMovies = await moviesRepository.getMovies()
+        const storedMovies = await moviesRepository.getAll()
 
-        expect(popularMovies.length).toBe(movies.length)
+        expect(storedMovies.length).toBe(movies.length)
+    })
+
+    it('should get paginated to-be-released stored movies', async  () => {
+        const movies = Array.from({length: 10}, (_, nameIdentifier) =>
+            MovieMother.aMovieReleasedNextYear(nameIdentifier))
+        await DBSeeder.seedMovies(db, movies)
+
+        const storedMovies = await moviesRepository.getNewReleasesPaginated()
+        expect(storedMovies.length).toBe(10)
     })
 })
