@@ -11,14 +11,14 @@ export class MoviesController {
 
     public async getPopular(req: Request, res: Response) {
         const limit: number | undefined  = req.query.limit ? parseInt(req.query.limit as string) : undefined
-        const popularMovies = await this.popularMoviesService.get(limit);
-        res.send(popularMovies);
+        const popularMovies = await this.popularMoviesService.get(limit)
+        res.send(popularMovies)
     }
 
     public async getTopRated(req: Request, res: Response) {
         const limit: number | undefined  = req.query.limit ? parseInt(req.query.limit as string) : undefined
-        const topRatedMovies = await this.topRatedMoviesService.get(limit);
-        res.send(topRatedMovies);
+        const topRatedMovies = await this.topRatedMoviesService.get(limit)
+        res.send(topRatedMovies)
     }
 
     public async getNewReleases(req: Request, res: Response) {
@@ -26,7 +26,7 @@ export class MoviesController {
         const page = req.query.page ? parseInt(req.query.page as string) : 1
         const perPage = req.query.perPage ? parseInt(req.query.perPage as string) : undefined
 
-        const newReleasesMovies = await this.newReleasesService.get({isAsc, perPage, page});
-        res.send(newReleasesMovies);
+        const newReleasesMovies = await this.newReleasesService.get({isAsc, perPage, page})
+        res.send(newReleasesMovies)
     }
 }

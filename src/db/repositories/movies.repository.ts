@@ -68,6 +68,7 @@ export class MoviesRepository {
 
     private mapRowToMovie (row: any): Movie {
         return new Movie(
+            row.id,
             row.title,
             new Date(row.release_date),
             row.popularity
