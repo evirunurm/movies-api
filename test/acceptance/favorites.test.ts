@@ -16,7 +16,6 @@ describe('Favorite Movies', () => {
             .send({userId: 1, movieId: 1})
 
         expect(response.status).toEqual(204)
-        expect(response.body).toHaveProperty('data')
     })
 
     it('should successfully get favorites for an existing user', async () => {

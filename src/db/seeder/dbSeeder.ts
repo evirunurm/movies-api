@@ -1,11 +1,45 @@
 import Movie from "../../domain/movie";
 import {Database, RunResult} from "sqlite3";
+import FavoriteMovies from "../../domain/entities/favoriteMovies";
+import {User} from "../../domain/entities/user";
 
 export class DBSeeder {
     static async seedMovies(db: Database, movies: Movie[]) {
         const sqlInsert = `INSERT INTO movies (title, release_date, popularity, rating)
                            VALUES ${movies.map(movie =>
             `('${movie.title}', '${movie.releaseDate.toISOString().split('T')[0]}', ${movie.popularity}, ${movie.rating})`).join(',')}`
+
+        return new Promise((resolve, reject) => {
+            db.run(sqlInsert, (result: RunResult, err: Error) => {
+                if (err) {
+                    reject(err)
+                    return
+                }
+                resolve(result)
+            })
+        })
+    }
+
+    static async seedUsers(db: Database, users: User[]) {
+        const sqlInsert = `INSERT INTO users (email, name)
+                           VALUES ${users.map(user =>
+                        `('${user.email}', ${user.name})`).join(',')}`
+
+        return new Promise((resolve, reject) => {
+            db.run(sqlInsert, (result: RunResult, err: Error) => {
+                if (err) {
+                    reject(err)
+                    return
+                }
+                resolve(result)
+            })
+        })
+    }
+
+    static async seedFavoriteMovie(db: Database, favoriteMovies: FavoriteMovies[]) {
+        const sqlInsert = `INSERT INTO favoriteMovies (userId, movieId)
+                           VALUES ${favoriteMovies.map(favoriteMovie =>
+                        `('${favoriteMovie.userId}', ${favoriteMovie.movieId})`).join(',')}`
 
         return new Promise((resolve, reject) => {
             db.run(sqlInsert, (result: RunResult, err: Error) => {

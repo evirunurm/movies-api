@@ -1,7 +1,7 @@
 import Movie from "../../src/domain/movie";
 
 type MovieConfiguration = {
-    name?: string
+    title?: string
     rating?: number
     popularity?: number
     nameIdentifier?: number
@@ -11,14 +11,14 @@ type MovieConfiguration = {
 export class MovieMother {
 
     public static aMovie({
-        name,
+        title,
         popularity,
         rating,
         nameIdentifier,
         releaseDate
     }: MovieConfiguration): Movie {
         return new Movie(
-            name ?? this.buildMovieName(nameIdentifier),
+            title ?? this.buildMovieName(nameIdentifier),
             releaseDate ?? new Date(),
             popularity ?? 10,
             rating ?? 5
