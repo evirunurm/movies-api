@@ -3,6 +3,7 @@ import {Database} from "sqlite3";
 import {MovieMother} from "../../../../test/builders/moviesMother";
 import {DBClient} from "../../dbClient";
 import {FavoritesRepository} from "./favories.repository";
+import {DBSeeder} from "../../seeder/dbSeeder";
 
 describe('Favorites Repository', () => {
     let favoritesRepository: FavoritesRepository
@@ -17,10 +18,12 @@ describe('Favorites Repository', () => {
     })
 
     it('should insert favorite movies', async () => {
-        const movie = MovieMother.aMovie({name: 'Favorite Movie'})
+        await DBSeeder.seedMovies(db, [MovieMother.aMovie({nameIdentifier: 10})])
+        const favoriteMovieId = await favoritesRepository.insert({
+            userId: 1,
+            movieId: 1
+        })
 
-        const favoriteMovie = await favoritesRepository.insert(movie)
-
-        expect(favoriteMovie.id).toBe(1)
+        expect(favoriteMovieId).toBe(1)
     })
 })

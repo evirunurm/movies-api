@@ -9,6 +9,9 @@ export class UsersFavoriteMoviesService {
     constructor(private favoritesRepository: FavoritesRepository) {}
 
     public async post({userId, movieId}: PostUsersFavoriteMovie): Promise<void> {
-        // Add movie to user's favorites
+        const favoriteMovie = await this.favoritesRepository.insert({
+            userId,
+            movieId
+        })
     }
 }

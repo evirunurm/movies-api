@@ -59,7 +59,7 @@ export class MoviesRepository {
                 }
                 resolve(row.count)
             })
-        });
+        })
     }
 
     private mapRowToMovie (row: any): Movie {

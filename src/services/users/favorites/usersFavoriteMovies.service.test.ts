@@ -1,6 +1,5 @@
 
 import {Database} from "sqlite3";
-import {MovieMother} from "../../../../test/builders/moviesMother";
 import {FavoritesRepository} from "../../../db/repositories/favories/favories.repository";
 import {UsersFavoriteMoviesService} from "./usersFavoriteMovies.service";
 
@@ -15,15 +14,16 @@ describe('Users Favorite Movies Service', () => {
     })
 
     it('should allow adding movies as favorites', async () => {
-        const movie = MovieMother.aMovie({name: 'Favorite Movie'})
-        movie.id = 1
-        favoritesRepository.insert = jest.fn().mockResolvedValue(movie)
+        favoritesRepository.insert = jest.fn().mockResolvedValue(1)
 
         await usersFavoriteMoviesService.post({
             userId: 1,
-            movieId: movie.id
+            movieId: 5
         })
 
-        expect(favoritesRepository.insert).toHaveBeenCalled()
+        expect(favoritesRepository.insert).toHaveBeenCalledWith({
+            userId: 1,
+            movieId: 5
+        })
     })
 })
