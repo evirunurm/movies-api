@@ -41,12 +41,15 @@ describe('Favorites Repository', () => {
                new FavoriteMovies(1, 1),
            ])
 
-           expect(async () => await favoritesRepository.delete({
+           await favoritesRepository.delete({
                userId: 1,
                movieId: 1
-           })).not.toThrow()
+           })
+           // We're using the getAllUsers method to check if the favorite movie was deleted.
+           // This is ok since we're testing the repository, and it's integration with the DB.
+           const favoriteMovies = await favoritesRepository.getAllForUser(1)
 
-           // TODO: Should you check the actual data in the database?
+           expect(favoriteMovies.length).toBe(0)
        })
    })
 

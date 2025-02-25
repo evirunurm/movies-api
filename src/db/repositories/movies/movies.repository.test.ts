@@ -68,35 +68,45 @@ describe('Movies Repository', () => {
         expect(storedMovies).toBe(10)
     })
 
-    it('should get new releases in descending order by default', async  () => {
-        const movies = Array.from({length: 3}, (_, nameIdentifier) =>{
+    it('should only get new-releases movies, in descending order by default', async  () => {
+        const movies = Array.from({length: 4}, (_, nameIdentifier) =>{
             const today = new Date()
             return MovieMother.aMovie({
                 nameIdentifier,
-                releaseDate: new Date(2021, 1, today.getFullYear() + nameIdentifier)
+                releaseDate: new Date(
+                    today.getFullYear() + nameIdentifier,
+                    today.getMonth(),
+                    today.getDate())
             })
         })
         await DBSeeder.seedMovies(db, movies)
 
         const storedMovies = await moviesRepository.getNewReleasesPaginated({})
-        expect(storedMovies[0].title).toBe('Movie 2')
-        expect(storedMovies[1].title).toBe('Movie 1')
-        expect(storedMovies[2].title).toBe('Movie 0')
+        // 'Movie 0' is released today
+        expect(storedMovies.length).toBe(3)
+        expect(storedMovies[0].title).toBe('Movie 3')
+        expect(storedMovies[1].title).toBe('Movie 2')
+        expect(storedMovies[2].title).toBe('Movie 1')
     })
 
-    it('should get new releases in ascending order', async  () => {
-        const movies = Array.from({length: 3}, (_, nameIdentifier) =>{
+    it('should only get new-releases, in ascending order', async  () => {
+        const movies = Array.from({length: 4}, (_, nameIdentifier) =>{
             const today = new Date()
             return MovieMother.aMovie({
                 nameIdentifier,
-                releaseDate: new Date(2021, 1, today.getFullYear() + nameIdentifier)
+                releaseDate: new Date(
+                    today.getFullYear() + nameIdentifier,
+                    today.getMonth(),
+                    today.getDate())
             })
         })
         await DBSeeder.seedMovies(db, movies)
 
         const storedMovies = await moviesRepository.getNewReleasesPaginated({isAsc: true})
-        expect(storedMovies[0].title).toBe('Movie 0')
-        expect(storedMovies[1].title).toBe('Movie 1')
-        expect(storedMovies[2].title).toBe('Movie 2')
+        // 'Movie 0' is released today
+        expect(storedMovies.length).toBe(3)
+        expect(storedMovies[0].title).toBe('Movie 1')
+        expect(storedMovies[1].title).toBe('Movie 2')
+        expect(storedMovies[2].title).toBe('Movie 3')
     })
 })
