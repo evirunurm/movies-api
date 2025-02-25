@@ -1,4 +1,4 @@
-import {MoviesRepository} from "../../../db/repositories/movies.repository";
+import {MoviesRepository} from "../../../db/repositories/movies/movies.repository";
 import {MoviesView} from "../../../domain/moviesView";
 import Movie from "../../../domain/movie";
 

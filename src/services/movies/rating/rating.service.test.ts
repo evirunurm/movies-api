@@ -1,7 +1,7 @@
 
 import {Database} from "sqlite3";
 import {RatingService} from "./rating.service";
-import {MoviesRepository} from "../../../db/repositories/movies.repository";
+import {MoviesRepository} from "../../../db/repositories/movies/movies.repository";
 import {MovieMother} from "../../../../test/builders/moviesMother";
 
 describe('Top-Rated Movies Service', () => {

@@ -1,4 +1,4 @@
-import Movie from "../../domain/movie";
+import Movie from "../../../domain/movie";
 import {Database} from "sqlite3";
 
 type NewReleasesQuery = {
@@ -11,10 +11,6 @@ export class MoviesRepository {
     constructor (private dbClient: Database) {}
 
     public async getAll (): Promise<Movie[]> {
-        // Important thing to take into account:
-        // Retrieving all rows from the database could potentially be a serious performance issue
-        // Using the method "dbClient.all" does not allow to use the LIMIT clause, nor the ORDER BY clause.
-        // That's why this must be done in memory, or using "dbClient.each" to process the rows one by one
         const query = 'SELECT * FROM movies'
 
         return new Promise((resolve, reject) => {
@@ -68,10 +64,10 @@ export class MoviesRepository {
 
     private mapRowToMovie (row: any): Movie {
         return new Movie(
-            row.id,
             row.title,
             new Date(row.release_date),
-            row.popularity
+            row.popularity,
+            row.id
         )
     }
 }

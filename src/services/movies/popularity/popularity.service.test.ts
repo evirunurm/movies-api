@@ -1,6 +1,6 @@
 
 import {Database} from "sqlite3";
-import {MoviesRepository} from "../../../db/repositories/movies.repository";
+import {MoviesRepository} from "../../../db/repositories/movies/movies.repository";
 import {PopularityService} from "./popularity.service";
 import {MovieMother} from "../../../../test/builders/moviesMother";
 

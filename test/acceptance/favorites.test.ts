@@ -15,7 +15,7 @@ describe('Favorite Movies', () => {
             .delete('/api/user/favorites')
             .send({userId: 1, movieId: 1})
 
-        expect(response.status).toEqual(2004)
+        expect(response.status).toEqual(204)
         expect(response.body).toHaveProperty('data')
     })
 

@@ -1,6 +1,6 @@
 import express from 'express';
 import {MoviesController} from "../controllers/movies.controller";
-import {MoviesRepository} from "../db/repositories/movies.repository";
+import {MoviesRepository} from "../db/repositories/movies/movies.repository";
 import {DBClient} from "../db/dbClient";
 import {RatingService} from "../services/movies/rating/rating.service";
 import {NewReleasesService} from "../services/movies/newReleases/newReleases.service";

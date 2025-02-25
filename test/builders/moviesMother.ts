@@ -1,6 +1,7 @@
 import Movie from "../../src/domain/movie";
 
 type MovieConfiguration = {
+    name?: string
     rating?: number
     popularity?: number
     nameIdentifier?: number
@@ -10,14 +11,14 @@ type MovieConfiguration = {
 export class MovieMother {
 
     public static aMovie({
+        name,
         popularity,
         rating,
         nameIdentifier,
         releaseDate
     }: MovieConfiguration): Movie {
         return new Movie(
-            nameIdentifier ?? 1,
-            this.buildMovieName(nameIdentifier),
+            name ?? this.buildMovieName(nameIdentifier),
             releaseDate ?? new Date(),
             popularity ?? 10,
             rating ?? 5
@@ -28,7 +29,6 @@ export class MovieMother {
         const releaseDate = new Date();
         releaseDate.setFullYear(releaseDate.getFullYear() + 1);
         return new Movie(
-            identifier ?? 1,
             this.buildMovieName(identifier),
             releaseDate,
             10,

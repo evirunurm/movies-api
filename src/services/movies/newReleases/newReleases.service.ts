@@ -1,4 +1,4 @@
-import {MoviesRepository} from "../../../db/repositories/movies.repository";
+import {MoviesRepository} from "../../../db/repositories/movies/movies.repository";
 import {PaginatedMoviesView} from "../../../domain/paginatedMoviesView";
 import {PaginationView} from "../../../domain/paginationView";
 

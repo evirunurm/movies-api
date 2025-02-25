@@ -1,8 +1,8 @@
 import {MoviesRepository} from "./movies.repository";
 import {Database} from "sqlite3";
-import {MovieMother} from "../../../test/builders/moviesMother";
-import {DBClient} from "../dbClient";
-import {DBSeeder} from "../seeder/dbSeeder";
+import {MovieMother} from "../../../../test/builders/moviesMother";
+import {DBClient} from "../../dbClient";
+import {DBSeeder} from "../../seeder/dbSeeder";
 
 describe('Movies Repository', () => {
     let moviesRepository: MoviesRepository
