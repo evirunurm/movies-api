@@ -12,7 +12,7 @@ describe('Favorites Repository', () => {
 
     beforeEach(async () => {
         dbClient = new DBClient({dbFile: ':memory:'})
-        await dbClient.createTables()
+        await dbClient.init()
         db = dbClient.getDB()
         favoritesRepository = new FavoritesRepository({dbClient})
     })
@@ -28,11 +28,6 @@ describe('Favorites Repository', () => {
                 MovieMother.aMovie({title: 'Not favorite movie'}),
                 MovieMother.aMovie({title: 'Favorite movie'})
             ])
-
-            const users = await dbClient.getAllUsers()
-            const movies = await dbClient.getAllMovies()
-            console.log('Users:', users)
-            console.log('Movies:', movies)
 
             const favoriteMovieId = await favoritesRepository.insert({
                 userId: 1,

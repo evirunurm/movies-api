@@ -7,7 +7,7 @@ export class DBSeeder {
     static async seedMovies(db: Database, movies: Movie[]) {
         const sqlInsert = `INSERT INTO movies (title, release_date, popularity, rating)
                            VALUES ${movies.map(movie =>
-            `('${movie.title}', '${movie.releaseDate.toISOString().split('T')[0]}', ${movie.popularity}, ${movie.rating})`).join(',')}`
+                        `('${movie.title}', '${movie.releaseDate.toISOString().split('T')[0]}', ${movie.popularity}, ${movie.rating})`).join(',')}`
 
         return new Promise((resolve, reject) => {
             db.run(sqlInsert, (result: RunResult, err: Error) => {

@@ -1,6 +1,7 @@
 import {Database} from "sqlite3";
 import Movie from "../../../domain/entity/movie";
 import {DBClient} from "../../dbClient";
+import {ElementNotFoundError} from "../../../domain/error/elementNotFoundError";
 
 type FavoritesRepositoryDependencies = {
     dbClient: DBClient
@@ -28,9 +29,7 @@ export class FavoritesRepository {
             // Because lambda functions do not have their own this, they inherit the context from the parent scope.
             this.db.run(insertQuery, [userId, movieId], function (error) {
                 if (error) {
-                    reject(error)
-                    console.log(error)
-                    return
+                    reject(new ElementNotFoundError(`User with id ${userId} or movie with id ${movieId} not found`))
                 }
                 resolve(this.lastID)
             })

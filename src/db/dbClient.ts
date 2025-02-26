@@ -10,7 +10,7 @@ export class DBClient {
     constructor({dbFile}: DBClientDependencies) {
         this.db = new Database(dbFile, async (err) => {
             if (err) console.error(err.message)
-            if (process.env.NODE_ENV !== 'test') await this.createTables()
+            await this.createTables()
         })
     }
 
@@ -22,7 +22,7 @@ export class DBClient {
         return this.db
     }
 
-    async createTables() {
+    private async createTables() {
          const sqlCreateUsers = `CREATE TABLE IF NOT EXISTS users (
                                  id           INTEGER PRIMARY KEY AUTOINCREMENT,
                                  email        TEXT,
@@ -53,34 +53,6 @@ export class DBClient {
                     resolve(null)
                 })
                 this.db.get(turnOnForeignKeys)
-            })
-        })
-    }
-
-    async getAllUsers() {
-        const query = 'SELECT * FROM users'
-
-        return new Promise((resolve, reject) => {
-            this.db.all(query, (err, rows: any) => {
-                if (err) {
-                    reject(err)
-                    return
-                }
-                resolve(rows)
-            })
-        })
-    }
-
-    async getAllMovies() {
-        const query = 'SELECT * FROM movies'
-
-        return new Promise((resolve, reject) => {
-            this.db.all(query, (err, rows: any) => {
-                if (err) {
-                    reject(err)
-                    return
-                }
-                resolve(rows)
             })
         })
     }

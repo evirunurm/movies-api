@@ -99,7 +99,7 @@ Paginación para navegar entre las películas.
 ```
 ___
 
-### 🕐 Guardar películas favoritas
+### ✅ Guardar películas favoritas
 
 Los usuarios pueden guardar sus películas favoritas en una lista personalizada.
 
@@ -140,7 +140,7 @@ Página de perfil de usuario con la lista de películas favoritas.
 
 ___
 
-### Detalle de la película
+### 🕐 Detalle de la película
 
 Los usuarios pueden ver detalles específicos de una película seleccionada.
 

@@ -1,6 +1,7 @@
 import {Request, Response} from 'express';
 import {FavoriteMoviesService} from "../services/users/favorites/favoriteMovies.service";
 import {MoviesView} from "../domain/view/movies.view";
+import {ElementNotFoundError} from "../domain/error/elementNotFoundError";
 
 type UsersControllerDependencies = {
     favoriteMoviesService: FavoriteMoviesService
@@ -18,10 +19,17 @@ export class UsersController {
             res.status(400).send({error: 'userId and movieId are required'})
             return
         }
-        await this.favoriteMoviesService.post({
-            userId: req.body.userId,
-            movieId: req.body.movieId
-        })
+        try {
+            await this.favoriteMoviesService.post({
+                userId: req.body.userId,
+                movieId: req.body.movieId
+            })
+        } catch (error) {
+            if (error instanceof ElementNotFoundError) {
+                res.status(404).send(error.message)
+                return
+            }
+        }
         res.status(201).send()
     }
 
