@@ -5,7 +5,7 @@ import MoviesRoutes from "./routes/movies.routes";
 import {UsersController} from "./controllers/users.controller";
 import {MoviesController} from "./controllers/movies.controller";
 import {MoviesRepository} from "./db/repositories/movies/movies.repository";
-import {FavoritesRepository} from "./db/repositories/favories/favories.repository";
+import {FavoritesRepository} from "./db/repositories/favories/favorites.repository";
 import {FavoriteMoviesService} from "./services/users/favorites/favoriteMovies.service";
 import {NewReleasesService} from "./services/movies/newReleases/newReleases.service";
 import {PopularityService} from "./services/movies/popularity/popularity.service";

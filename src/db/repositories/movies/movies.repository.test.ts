@@ -3,7 +3,7 @@ import {Database} from "sqlite3";
 import {MovieMother} from "../../../../test/builders/moviesMother";
 import {DBClient} from "../../dbClient";
 import {DBSeeder} from "../../seeder/dbSeeder";
-import {IDBClient} from "../../idbClient";
+import {IDBClient} from "../../dbClient.types";
 
 describe('Movies Repository', () => {
     let moviesRepository: MoviesRepository

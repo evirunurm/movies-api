@@ -1,6 +1,6 @@
 import {MoviesView} from "../../../domain/view/movies.view";
 import Movie from "../../../domain/entity/movie";
-import {IRatingService, RatingServiceDependencies} from "./irating.service";
+import {IRatingService, RatingServiceDependencies} from "./rating.service.types";
 
 export class RatingService implements IRatingService {
     private readonly defaultLimit: number = 10

@@ -1,6 +1,6 @@
 import {PaginatedMoviesView} from "../../../domain/view/paginatedMovies.view";
 import {PaginationView} from "../../../domain/view/pagination.view";
-import {INewReleasesService, NewReleasesGetConfiguration, NewReleasesServiceDependencies} from "./inewReleases.service";
+import {INewReleasesService, NewReleasesGetConfiguration, NewReleasesServiceDependencies} from "./newReleases.service.types";
 
 export class NewReleasesService implements INewReleasesService {
     private readonly defaultPerPage: number = 10

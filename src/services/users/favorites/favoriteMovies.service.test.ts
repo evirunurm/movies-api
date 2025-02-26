@@ -1,6 +1,6 @@
 import {FavoriteMoviesService} from "./favoriteMovies.service";
 import FavoriteMovie from "../../../domain/entity/favoriteMovies";
-import {IFavoritesRepository} from "../../../db/repositories/favories/ifavories.repository";
+import {IFavoritesRepository} from "../../../db/repositories/favories/favorites.repository.types";
 
 describe('Favorite Movies Service', () => {
     let usersFavoriteMoviesService: FavoriteMoviesService

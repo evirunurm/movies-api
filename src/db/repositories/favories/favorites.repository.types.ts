@@ -1,5 +1,5 @@
 import Movie from "../../../domain/entity/movie";
-import {IDBClient} from "../../idbClient";
+import {IDBClient} from "../../dbClient.types";
 
 export type InsertQuery = {
     movieId: number

@@ -1,6 +1,6 @@
 import {NewReleasesService} from "./newReleases.service";
 import {MovieMother} from "../../../../test/builders/moviesMother";
-import {IMoviesRepository} from "../../../db/repositories/movies/imovies.repository";
+import {IMoviesRepository} from "../../../db/repositories/movies/movies.repository.types";
 
 describe('New Releases Service', () => {
     let newReleasesService: NewReleasesService

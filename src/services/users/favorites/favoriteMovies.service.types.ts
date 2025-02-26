@@ -1,5 +1,5 @@
 import Movie from "../../../domain/entity/movie";
-import {IFavoritesRepository} from "../../../db/repositories/favories/ifavories.repository";
+import {IFavoritesRepository} from "../../../db/repositories/favories/favorites.repository.types";
 
 export type UserMovie = {
     userId: number,

@@ -1,8 +1,7 @@
 import {Database} from "sqlite3";
 import Movie from "../../../domain/entity/movie";
 import {ElementNotFoundError} from "../../../domain/error/elementNotFoundError";
-import {FavoritesRepositoryDependencies, IFavoritesRepository, InsertQuery} from "./ifavories.repository";
-
+import {FavoritesRepositoryDependencies, IFavoritesRepository, InsertQuery} from "./favorites.repository.types";
 
 export class FavoritesRepository implements IFavoritesRepository {
     private db: Database

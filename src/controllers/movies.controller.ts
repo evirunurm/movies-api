@@ -1,7 +1,7 @@
 import {Request, Response} from 'express';
 import {PopularityService} from "../services/movies/popularity/popularity.service";
 import {RatingService} from "../services/movies/rating/rating.service";
-import {INewReleasesService} from "../services/movies/newReleases/inewReleases.service";
+import {INewReleasesService} from "../services/movies/newReleases/newReleases.service.types";
 
 type MoviesControllerDependencies = {
     ratingService: RatingService,

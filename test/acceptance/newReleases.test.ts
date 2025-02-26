@@ -1,24 +1,13 @@
 import request from 'supertest'
 import App from "../../src/app";
-import {asValue} from "awilix";
-import Injector from "../../src/injector";
-import {Database} from "sqlite3";
-import {DBClient} from "../../src/db/dbClient";
+import {setupDatabaseService} from "../utils/dbServiceSetupHelper";
 
 describe('New-Releases Movies', () => {
     let service: App
-    let injector: Injector
-    let db: Database
 
     beforeEach(async () => {
-        const dbClient = new DBClient({dbFile: ':memory:'})
-        await dbClient.init() // Waiting for database setup: table creation, enabling foreign keys, etc.
-        db = dbClient.getDB()
-        injector = new Injector()
-        injector.container.register({
-            dbClient: asValue(dbClient)
-        })
-        service = new App({injector})
+        const {service: setupService} = await setupDatabaseService()
+        service = setupService
     })
 
     it('should return the correct body', async () => {

@@ -1,5 +1,5 @@
 import {Database} from 'sqlite3';
-import {DBClientDependencies, IDBClient} from "./idbClient";
+import {DBClientDependencies, IDBClient} from "./dbClient.types";
 
 export class DBClient implements IDBClient {
     private readonly db: Database

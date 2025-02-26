@@ -1,5 +1,5 @@
 import Movie from "../../../domain/entity/movie";
-import {FavoriteMoviesServiceDependencies, IFavoriteMoviesService, UserMovie} from "./ifavoriteMovies.service";
+import {FavoriteMoviesServiceDependencies, IFavoriteMoviesService, UserMovie} from "./favoriteMovies.service.types";
 
 export class FavoriteMoviesService implements IFavoriteMoviesService {
     private readonly favoritesRepository

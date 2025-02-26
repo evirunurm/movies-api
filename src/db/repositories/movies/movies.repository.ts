@@ -1,6 +1,6 @@
 import Movie from "../../../domain/entity/movie";
 import {Database} from "sqlite3";
-import {IMoviesRepository, MoviesRepositoryDependencies, NewReleasesQuery,} from "./imovies.repository";
+import {IMoviesRepository, MoviesRepositoryDependencies, NewReleasesQuery,} from "./movies.repository.types";
 
 export class MoviesRepository implements IMoviesRepository {
     private db: Database

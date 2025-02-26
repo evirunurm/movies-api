@@ -1,10 +1,10 @@
 import {Database} from "sqlite3";
 import {MovieMother} from "../../../../test/builders/moviesMother";
 import {DBClient} from "../../dbClient";
-import {FavoritesRepository} from "./favories.repository";
+import {FavoritesRepository} from "./favorites.repository";
 import {DBSeeder} from "../../seeder/dbSeeder";
 import {User} from "../../../domain/entity/user";
-import {IDBClient} from "../../idbClient";
+import {IDBClient} from "../../dbClient.types";
 
 describe('Favorites Repository', () => {
     let favoritesRepository: FavoritesRepository

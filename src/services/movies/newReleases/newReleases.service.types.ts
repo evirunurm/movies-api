@@ -1,5 +1,5 @@
 import {PaginatedMoviesView} from "../../../domain/view/paginatedMovies.view";
-import {IMoviesRepository} from "../../../db/repositories/movies/imovies.repository";
+import {IMoviesRepository} from "../../../db/repositories/movies/movies.repository.types";
 
 export type NewReleasesGetConfiguration = {
     isAsc?: boolean,

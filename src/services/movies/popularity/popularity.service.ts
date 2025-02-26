@@ -1,6 +1,6 @@
 import {MoviesView} from "../../../domain/view/movies.view";
 import Movie from "../../../domain/entity/movie";
-import {IPopularityService, PopularityServiceDependencies} from "./ipopularity.service";
+import {IPopularityService, PopularityServiceDependencies} from "./popularity.service.types";
 
 export class PopularityService implements IPopularityService {
     private readonly defaultLimit: number = 10
