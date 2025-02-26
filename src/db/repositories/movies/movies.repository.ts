@@ -1,5 +1,10 @@
-import Movie from "../../../domain/movie";
+import Movie from "../../../domain/entity/movie";
 import {Database} from "sqlite3";
+import {DBClient} from "../../dbClient";
+
+type MoviesRepositoryDependencies = {
+    dbClient: DBClient
+}
 
 type NewReleasesQuery = {
     offset?: number
@@ -8,13 +13,17 @@ type NewReleasesQuery = {
 }
 
 export class MoviesRepository {
-    constructor (private dbClient: Database) {}
+    private db: Database
+
+    constructor ({dbClient}: MoviesRepositoryDependencies ) {
+        this.db = dbClient.getDB()
+    }
 
     public async getAll (): Promise<Movie[]> {
         const query = 'SELECT * FROM movies'
 
         return new Promise((resolve, reject) => {
-            this.dbClient.all(query, (err, rows: any) => {
+            this.db.all(query, (err, rows: any) => {
                 if (err) {
                     reject(err)
                     return
@@ -36,7 +45,7 @@ export class MoviesRepository {
                         LIMIT ${offset}, ${perPage}`
 
         return new Promise((resolve, reject) => {
-            this.dbClient.each(query, (_, rows: any) => {
+            this.db.each(query, (_, rows: any) => {
                 movies.push(this.mapRowToMovie(rows))
             }, (error, _count) => {
                 if (error) {
@@ -52,7 +61,7 @@ export class MoviesRepository {
         const query = `SELECT COUNT(*) as count FROM movies WHERE julianday(release_date) > julianday('now')`
 
         return new Promise((resolve, reject) => {
-            this.dbClient.get(query, (err, row: any) => {
+            this.db.get(query, (err, row: any) => {
                 if (err) {
                     reject(err)
                     return

@@ -1,5 +1,3 @@
-
-import {Database} from "sqlite3";
 import {NewReleasesService} from "./newReleases.service";
 import {MoviesRepository} from "../../../db/repositories/movies/movies.repository";
 import {MovieMother} from "../../../../test/builders/moviesMother";
@@ -9,9 +7,10 @@ describe('New Releases Service', () => {
     let moviesRepository: MoviesRepository
 
     beforeEach(() => {
-        const db = jest.fn() as unknown as Database
-        moviesRepository = new MoviesRepository(db)
-        newReleasesService = new NewReleasesService(moviesRepository)
+        // Mock the repository as a dummy by default.
+        // In each test, if needed, we will override the implementation/return value
+        moviesRepository = jest.fn() as unknown as MoviesRepository
+        newReleasesService = new NewReleasesService({moviesRepository})
     })
 
     it('should get correct pagination if nothing is specified', async () => {

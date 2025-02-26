@@ -1,4 +1,4 @@
-import Movie from "./movie";
+import Movie from "../entity/movie";
 
 export class MoviesView {
     constructor(

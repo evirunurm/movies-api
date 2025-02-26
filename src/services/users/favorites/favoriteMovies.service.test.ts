@@ -1,17 +1,14 @@
-
-import {Database} from "sqlite3";
 import {FavoritesRepository} from "../../../db/repositories/favories/favories.repository";
-import {UsersFavoriteMoviesService} from "./usersFavoriteMovies.service";
-import FavoriteMovie from "../../../domain/entities/favoriteMovies";
+import {FavoriteMoviesService} from "./favoriteMovies.service";
+import FavoriteMovie from "../../../domain/entity/favoriteMovies";
 
-describe('Users Favorite Movies Service', () => {
-    let usersFavoriteMoviesService: UsersFavoriteMoviesService
+describe('Favorite Movies Service', () => {
+    let usersFavoriteMoviesService: FavoriteMoviesService
     let favoritesRepository: FavoritesRepository
 
     beforeEach(() => {
-        const db = jest.fn() as unknown as Database
-        favoritesRepository = new FavoritesRepository(db)
-        usersFavoriteMoviesService = new UsersFavoriteMoviesService(favoritesRepository)
+        favoritesRepository = jest.fn() as unknown as FavoritesRepository
+        usersFavoriteMoviesService = new FavoriteMoviesService({favoritesRepository})
     })
 
     it('should allow adding movies as favorites', async () => {

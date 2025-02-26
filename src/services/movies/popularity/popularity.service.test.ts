@@ -1,5 +1,3 @@
-
-import {Database} from "sqlite3";
 import {MoviesRepository} from "../../../db/repositories/movies/movies.repository";
 import {PopularityService} from "./popularity.service";
 import {MovieMother} from "../../../../test/builders/moviesMother";
@@ -9,9 +7,8 @@ describe('Popular Movies Service', () => {
     let moviesRepository: MoviesRepository
 
     beforeEach(() => {
-        const db = jest.fn() as unknown as Database
-        moviesRepository = new MoviesRepository(db)
-        popularMoviesService = new PopularityService(moviesRepository)
+        moviesRepository = jest.fn() as unknown as MoviesRepository
+        popularMoviesService = new PopularityService({moviesRepository})
     })
     
     it('should get a list of movies, ordered by popularity', async () => {

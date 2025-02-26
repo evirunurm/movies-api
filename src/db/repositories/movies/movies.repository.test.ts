@@ -10,10 +10,14 @@ describe('Movies Repository', () => {
     let dbClient: DBClient
 
     beforeEach(async () => {
-        dbClient = new DBClient(':memory:')
-        db = dbClient.connect()
-        await DBClient.createTables(db)
-        moviesRepository = new MoviesRepository(db)
+        dbClient = new DBClient({dbFile: ':memory:'})
+        await dbClient.createTables()
+        db = dbClient.getDB()
+        moviesRepository = new MoviesRepository({dbClient})
+    })
+
+    afterEach(() => {
+        db.close()
     })
 
     it('should get the stored movies', async () => {

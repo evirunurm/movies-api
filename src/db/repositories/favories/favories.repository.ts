@@ -1,5 +1,10 @@
 import {Database} from "sqlite3";
-import Movie from "../../../domain/movie";
+import Movie from "../../../domain/entity/movie";
+import {DBClient} from "../../dbClient";
+
+type FavoritesRepositoryDependencies = {
+    dbClient: DBClient
+}
 
 type InsertQuery = {
     movieId: number
@@ -7,7 +12,11 @@ type InsertQuery = {
 }
 
 export class FavoritesRepository {
-    constructor (private dbClient: Database) {}
+    private db: Database
+
+    constructor ({dbClient}: FavoritesRepositoryDependencies) {
+        this.db = dbClient.getDB()
+    }
 
     insert({movieId, userId}: InsertQuery): Promise<number> {
         const insertQuery = `INSERT INTO favoriteMovies(userId, movieId) VALUES(?, ?)`
@@ -17,9 +26,10 @@ export class FavoritesRepository {
             // So, we must use an old-school function () { ... } style callback rather than a lambda function,
             // otherwise this.lastID and this.changes will be undefined.
             // Because lambda functions do not have their own this, they inherit the context from the parent scope.
-            this.dbClient.run(insertQuery, [movieId, userId], function (error) {
+            this.db.run(insertQuery, [userId, movieId], function (error) {
                 if (error) {
                     reject(error)
+                    console.log(error)
                     return
                 }
                 resolve(this.lastID)
@@ -31,7 +41,7 @@ export class FavoritesRepository {
         const deleteQuery = `DELETE FROM favoriteMovies WHERE userId = ? AND movieId = ?`
 
         return new Promise((resolve, reject) => {
-            this.dbClient.run(deleteQuery, [userId, movieId], (error) => {
+            this.db.run(deleteQuery, [userId, movieId], (error) => {
                 if (error) {
                     reject(error)
                     return
@@ -47,7 +57,7 @@ export class FavoritesRepository {
             WHERE favoriteMovies.userId = ?`
 
         return new Promise((resolve, reject) => {
-            this.dbClient.all(selectQuery, [userId], (error, rows: any) => {
+            this.db.all(selectQuery, [userId], (error, rows: any) => {
                 if (error) {
                     reject(error)
                     return
@@ -62,6 +72,7 @@ export class FavoritesRepository {
             row.title,
             new Date(row.release_date),
             row.popularity,
+            row.rating,
             row.id
         )
     }

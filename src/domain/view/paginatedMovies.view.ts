@@ -1,6 +1,6 @@
-import Movie from "./movie";
-import {PaginationView} from "./paginationView";
-import {MoviesView} from "./moviesView";
+import Movie from "../entity/movie";
+import {PaginationView} from "./pagination.view";
+import {MoviesView} from "./movies.view";
 
 export class PaginatedMoviesView extends MoviesView {
     constructor(

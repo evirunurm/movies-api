@@ -1,11 +1,9 @@
-
 import {Database} from "sqlite3";
 import {MovieMother} from "../../../../test/builders/moviesMother";
 import {DBClient} from "../../dbClient";
 import {FavoritesRepository} from "./favories.repository";
 import {DBSeeder} from "../../seeder/dbSeeder";
-import FavoriteMovies from "../../../domain/entities/favoriteMovies";
-import {User} from "../../../domain/entities/user";
+import {User} from "../../../domain/entity/user";
 
 describe('Favorites Repository', () => {
     let favoritesRepository: FavoritesRepository
@@ -13,21 +11,38 @@ describe('Favorites Repository', () => {
     let dbClient: DBClient
 
     beforeEach(async () => {
-        dbClient = new DBClient(':memory:')
-        db = dbClient.connect()
-        await DBClient.createTables(db)
-        favoritesRepository = new FavoritesRepository(db)
+        dbClient = new DBClient({dbFile: ':memory:'})
+        await dbClient.createTables()
+        db = dbClient.getDB()
+        favoritesRepository = new FavoritesRepository({dbClient})
+    })
+
+    afterEach(() => {
+        db.close()
     })
 
     describe('when inserting', () => {
         it('should insert favorite movies', async () => {
-            await DBSeeder.seedMovies(db, [MovieMother.aMovie({nameIdentifier: 10})])
+            await DBSeeder.seedUsers(db, [new User('exampleUser', 'user@example.com')])
+            await DBSeeder.seedMovies(db, [
+                MovieMother.aMovie({title: 'Not favorite movie'}),
+                MovieMother.aMovie({title: 'Favorite movie'})
+            ])
+
+            const users = await dbClient.getAllUsers()
+            const movies = await dbClient.getAllMovies()
+            console.log('Users:', users)
+            console.log('Movies:', movies)
+
             const favoriteMovieId = await favoritesRepository.insert({
                 userId: 1,
-                movieId: 1
+                movieId: 2
             })
+            const favoriteMovies = await favoritesRepository.getAllForUser(1)
 
             expect(favoriteMovieId).toBe(1)
+            expect(favoriteMovies.length).toBe(1)
+            expect(favoriteMovies[0].title).toBe('Favorite movie')
         })
     })
 
@@ -37,9 +52,10 @@ describe('Favorites Repository', () => {
                new User('exampleUser', 'user@example.com')
            ])
            await DBSeeder.seedMovies(db, [MovieMother.aMovie({})])
-           await DBSeeder.seedFavoriteMovie(db, [
-               new FavoriteMovies(1, 1),
-           ])
+           await favoritesRepository.insert({
+               userId: 1,
+               movieId: 1
+           })
 
            await favoritesRepository.delete({
                userId: 1,
@@ -54,24 +70,16 @@ describe('Favorites Repository', () => {
    })
 
     describe('when getting', () => {
-        it('should get favorite movies', async () => {
-            await DBSeeder.seedUsers(db, [new User('exampleUser', 'user@example.com')])
-            await DBSeeder.seedMovies(db, [MovieMother.aMovie({title: 'Testing movie'})])
-            await DBSeeder.seedFavoriteMovie(db, [new FavoriteMovies(1, 1)])
-
-            const favoriteMovies = await favoritesRepository.getAllForUser(1)
-
-            expect(favoriteMovies.length).toBe(1)
-            expect(favoriteMovies[0].title).toBe('Testing movie')
-        })
-
         it('should not get not-favorite movies', async () => {
             await DBSeeder.seedUsers(db, [new User('exampleUser', 'user@example.com')])
             await DBSeeder.seedMovies(db, [
                 MovieMother.aMovie({title: 'Favorite movie'}),
                 MovieMother.aMovie({title: 'Not favorite movie'})
             ])
-            await DBSeeder.seedFavoriteMovie(db, [new FavoriteMovies(1, 1)])
+            await favoritesRepository.insert({
+                userId: 1,
+                movieId: 1
+            })
 
             const favoriteMovies = await favoritesRepository.getAllForUser(1)
 

@@ -1,22 +1,36 @@
 import {Request, Response} from 'express';
-import {UsersFavoriteMoviesService} from "../services/users/favorites/usersFavoriteMovies.service";
+import {FavoriteMoviesService} from "../services/users/favorites/favoriteMovies.service";
+import {MoviesView} from "../domain/view/movies.view";
+
+type UsersControllerDependencies = {
+    favoriteMoviesService: FavoriteMoviesService
+}
 
 export class UsersController {
+    private readonly favoriteMoviesService
 
-    constructor(
-        private usersFavoriteMoviesService: UsersFavoriteMoviesService,
-    ) {}
+    constructor( {favoriteMoviesService}: UsersControllerDependencies) {
+        this.favoriteMoviesService = favoriteMoviesService
+    }
 
     public async postFavoriteMovie(req: Request, res: Response) {
-        const id = await this.usersFavoriteMoviesService.post({
+        if (!req.body.userId || !req.body.movieId) {
+            res.status(400).send({error: 'userId and movieId are required'})
+            return
+        }
+        await this.favoriteMoviesService.post({
             userId: req.body.userId,
             movieId: req.body.movieId
         })
-        res.status(201).send({id})
+        res.status(201).send()
     }
 
     public async deleteFavoriteMovie(req: Request, res: Response) {
-        await this.usersFavoriteMoviesService.delete({
+        if (!req.body.userId || !req.body.movieId) {
+            res.status(400).send({error: 'userId and movieId are required'})
+            return
+        }
+        await this.favoriteMoviesService.delete({
             userId: req.body.userId,
             movieId: req.body.movieId
         })
@@ -24,6 +38,13 @@ export class UsersController {
     }
 
     public async getFavoriteMovies(req: Request, res: Response) {
-
+        if (!req.body.userId) {
+            res.status(400).send({error: 'userId is required'})
+            return
+        }
+        const favorites = await this.favoriteMoviesService.getAllForUser(
+            req.body.userId
+        )
+        res.status(200).send(new MoviesView(favorites))
     }
 }

@@ -1,7 +1,7 @@
-import Movie from "../../domain/movie";
+import Movie from "../../domain/entity/movie";
 import {Database, RunResult} from "sqlite3";
-import FavoriteMovies from "../../domain/entities/favoriteMovies";
-import {User} from "../../domain/entities/user";
+import FavoriteMovies from "../../domain/entity/favoriteMovies";
+import {User} from "../../domain/entity/user";
 
 export class DBSeeder {
     static async seedMovies(db: Database, movies: Movie[]) {
@@ -23,7 +23,7 @@ export class DBSeeder {
     static async seedUsers(db: Database, users: User[]) {
         const sqlInsert = `INSERT INTO users (email, name)
                            VALUES ${users.map(user =>
-                        `('${user.email}', ${user.name})`).join(',')}`
+                        `('${user.email}', '${user.name}')`).join(',')}`
 
         return new Promise((resolve, reject) => {
             db.run(sqlInsert, (result: RunResult, err: Error) => {

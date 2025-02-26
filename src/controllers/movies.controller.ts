@@ -3,12 +3,26 @@ import {PopularityService} from "../services/movies/popularity/popularity.servic
 import {NewReleasesService} from "../services/movies/newReleases/newReleases.service";
 import {RatingService} from "../services/movies/rating/rating.service";
 
-export class MoviesController {
+type MoviesControllerDependencies = {
+    ratingService: RatingService,
+    popularMoviesService: PopularityService,
+    newReleasesService: NewReleasesService
+}
 
-    constructor(
-        private topRatedMoviesService: RatingService,
-        private popularMoviesService: PopularityService,
-        private newReleasesService: NewReleasesService) {}
+export class MoviesController {
+    private readonly ratingService
+    private readonly popularMoviesService
+    private readonly newReleasesService
+
+    constructor ({
+        ratingService,
+        popularMoviesService,
+        newReleasesService
+    }: MoviesControllerDependencies) {
+        this.ratingService = ratingService
+        this.popularMoviesService = popularMoviesService
+        this.newReleasesService = newReleasesService
+    }
 
     public async getPopular(req: Request, res: Response) {
         const limit: number | undefined  = req.query.limit ? parseInt(req.query.limit as string) : undefined
@@ -18,7 +32,7 @@ export class MoviesController {
 
     public async getTopRated(req: Request, res: Response) {
         const limit: number | undefined  = req.query.limit ? parseInt(req.query.limit as string) : undefined
-        const topRatedMovies = await this.topRatedMoviesService.get(limit)
+        const topRatedMovies = await this.ratingService.get(limit)
         res.send(topRatedMovies)
     }
 

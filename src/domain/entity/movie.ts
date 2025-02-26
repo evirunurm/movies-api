@@ -4,6 +4,5 @@ export default class Movie {
         public releaseDate: Date,
         public popularity: number,
         public rating: number = 0,
-        public id?: number,
-    ) {}
+        public id?: number) {}
 }

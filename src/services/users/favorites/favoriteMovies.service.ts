@@ -1,13 +1,21 @@
 import {FavoritesRepository} from "../../../db/repositories/favories/favories.repository";
-import Movie from "../../../domain/movie";
+import Movie from "../../../domain/entity/movie";
 
 type UserMovie = {
     userId: number,
     movieId: number
 }
 
-export class UsersFavoriteMoviesService {
-    constructor(private favoritesRepository: FavoritesRepository) {}
+type FavoriteMoviesServiceDependencies = {
+    favoritesRepository: FavoritesRepository
+}
+
+export class FavoriteMoviesService {
+    private readonly favoritesRepository
+
+    constructor({favoritesRepository}: FavoriteMoviesServiceDependencies) {
+        this.favoritesRepository = favoritesRepository
+    }
 
     public async post({userId, movieId}: UserMovie): Promise<number> {
         return await this.favoritesRepository.insert({

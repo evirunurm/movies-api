@@ -1,10 +1,14 @@
 import express from 'express';
 
-class GlobalRoutes {
-    public router = express.Router();
+export default class GlobalRoutes {
+    private router = express.Router();
 
-    constructor() {
+    constructor () {
         this.initializeRoutes();
+    }
+
+    public getRouter() {
+        return this.router;
     }
 
     private initializeRoutes() {
@@ -13,5 +17,3 @@ class GlobalRoutes {
         });
     }
 }
-
-export default new GlobalRoutes().router;
