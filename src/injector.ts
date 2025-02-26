@@ -10,6 +10,7 @@ import {FavoriteMoviesService} from "./services/users/favorites/favoriteMovies.s
 import {NewReleasesService} from "./services/movies/newReleases/newReleases.service";
 import {PopularityService} from "./services/movies/popularity/popularity.service";
 import {RatingService} from "./services/movies/rating/rating.service";
+require('dotenv').config()
 
 export default class Injector {
     public container: AwilixContainer = createContainer()
@@ -19,9 +20,9 @@ export default class Injector {
     }
 
     private initialize() {
-        // TODO: const { SQLITE_DB_CONNECT } = process.env
+        const { SQLITE_DB_CONNECT } = process.env
         this.container.register({
-            dbFile: asValue('db.sqlite'),
+            dbFile: asValue(SQLITE_DB_CONNECT),
             dbClient: asClass(DBClient).singleton(),
             usersRoutes: asClass(UsersRoutes).singleton(),
             moviesRoutes: asClass(MoviesRoutes).singleton(),

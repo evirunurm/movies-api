@@ -1,16 +1,14 @@
 import express from 'express'
 import GlobalRoutes from './routes/routes'
 import Injector from "./injector";
+require('dotenv').config()
 
 type AppDependencies = {
     injector: Injector
 }
 
 export default class App {
-    // TODO: Set APP as private,
     public app: express.Application
-    // TODO: Move PORT to .env
-    private readonly PORT: number = 3000
     public readonly injector: Injector
 
     constructor ({injector}: AppDependencies) {
@@ -33,7 +31,8 @@ export default class App {
 
     private startServer() {
         if (process.env.NODE_ENV !== 'test') {
-            this.app.listen(this.PORT, () => console.log(`Listening on port ${this.PORT}`))
+            const { PORT } = process.env
+            this.app.listen(PORT, () => console.log(`Listening on port ${PORT}`))
         }
     }
 }
