@@ -1,28 +1,23 @@
 import {Database} from 'sqlite3';
+import {DBClientDependencies, IDBClient} from "./idbClient";
 
-type DBClientDependencies = {
-    dbFile: string
-}
-
-export class DBClient {
+export class DBClient implements IDBClient {
     private readonly db: Database
 
-    constructor({dbFile}: DBClientDependencies) {
+    constructor ({dbFile}: DBClientDependencies) {
         this.db = new Database(dbFile, async (err) => {
             if (err) console.error(err.message)
             await this.createTables()
         })
     }
 
-    async init() {
+    getDB = () => this.db
+
+    async init () {
         await this.createTables()
     }
 
-    getDB() {
-        return this.db
-    }
-
-    private async createTables() {
+    private async createTables () {
          const sqlCreateUsers = `CREATE TABLE IF NOT EXISTS users (
                                  id           INTEGER PRIMARY KEY AUTOINCREMENT,
                                  email        TEXT,

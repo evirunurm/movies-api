@@ -1,18 +1,10 @@
 import {Database} from "sqlite3";
 import Movie from "../../../domain/entity/movie";
-import {DBClient} from "../../dbClient";
 import {ElementNotFoundError} from "../../../domain/error/elementNotFoundError";
+import {FavoritesRepositoryDependencies, IFavoritesRepository, InsertQuery} from "./ifavories.repository";
 
-type FavoritesRepositoryDependencies = {
-    dbClient: DBClient
-}
 
-type InsertQuery = {
-    movieId: number
-    userId: number
-}
-
-export class FavoritesRepository {
+export class FavoritesRepository implements IFavoritesRepository {
     private db: Database
 
     constructor ({dbClient}: FavoritesRepositoryDependencies) {
@@ -23,10 +15,6 @@ export class FavoritesRepository {
         const insertQuery = `INSERT INTO favoriteMovies(userId, movieId) VALUES(?, ?)`
 
         return new Promise((resolve, reject) => {
-            // In the callback, 'this' object will contain a property lastID, which contain the value of the last inserted row ID.
-            // So, we must use an old-school function () { ... } style callback rather than a lambda function,
-            // otherwise this.lastID and this.changes will be undefined.
-            // Because lambda functions do not have their own this, they inherit the context from the parent scope.
             this.db.run(insertQuery, [userId, movieId], function (error) {
                 if (error) {
                     reject(new ElementNotFoundError(`User with id ${userId} or movie with id ${movieId} not found`))
@@ -66,6 +54,7 @@ export class FavoritesRepository {
         )})
     }
 
+    // TODO: Separate this method into a separate mapper/utility class
     private mapRowToMovie (row: any): Movie {
         return new Movie(
             row.title,

@@ -4,11 +4,12 @@ import {DBClient} from "../../dbClient";
 import {FavoritesRepository} from "./favories.repository";
 import {DBSeeder} from "../../seeder/dbSeeder";
 import {User} from "../../../domain/entity/user";
+import {IDBClient} from "../../idbClient";
 
 describe('Favorites Repository', () => {
     let favoritesRepository: FavoritesRepository
     let db: Database
-    let dbClient: DBClient
+    let dbClient: IDBClient
 
     beforeEach(async () => {
         dbClient = new DBClient({dbFile: ':memory:'})

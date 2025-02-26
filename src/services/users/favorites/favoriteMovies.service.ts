@@ -1,16 +1,7 @@
-import {FavoritesRepository} from "../../../db/repositories/favories/favories.repository";
 import Movie from "../../../domain/entity/movie";
+import {FavoriteMoviesServiceDependencies, IFavoriteMoviesService, UserMovie} from "./ifavoriteMovies.service";
 
-type UserMovie = {
-    userId: number,
-    movieId: number
-}
-
-type FavoriteMoviesServiceDependencies = {
-    favoritesRepository: FavoritesRepository
-}
-
-export class FavoriteMoviesService {
+export class FavoriteMoviesService implements IFavoriteMoviesService {
     private readonly favoritesRepository
 
     constructor({favoritesRepository}: FavoriteMoviesServiceDependencies) {

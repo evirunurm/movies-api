@@ -14,6 +14,7 @@ describe('Favorite Movies', () => {
     let db: Database
     
     beforeEach(async () => {
+        // TODO: Isolate the database setup in a helper function?
         const dbClient = new DBClient({dbFile: ':memory:'})
         await dbClient.init() // Waiting for database setup: table creation, enabling foreign keys, etc.
         db = dbClient.getDB()

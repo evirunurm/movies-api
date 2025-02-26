@@ -1,15 +1,13 @@
 import {NewReleasesService} from "./newReleases.service";
-import {MoviesRepository} from "../../../db/repositories/movies/movies.repository";
 import {MovieMother} from "../../../../test/builders/moviesMother";
+import {IMoviesRepository} from "../../../db/repositories/movies/imovies.repository";
 
 describe('New Releases Service', () => {
     let newReleasesService: NewReleasesService
-    let moviesRepository: MoviesRepository
+    let moviesRepository: IMoviesRepository
 
     beforeEach(() => {
-        // Mock the repository as a dummy by default.
-        // In each test, if needed, we will override the implementation/return value
-        moviesRepository = jest.fn() as unknown as MoviesRepository
+        moviesRepository = {} as IMoviesRepository
         newReleasesService = new NewReleasesService({moviesRepository})
     })
 

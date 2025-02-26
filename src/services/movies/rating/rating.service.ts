@@ -1,12 +1,8 @@
-import {MoviesRepository} from "../../../db/repositories/movies/movies.repository";
 import {MoviesView} from "../../../domain/view/movies.view";
 import Movie from "../../../domain/entity/movie";
+import {IRatingService, RatingServiceDependencies} from "./irating.service";
 
-type RatingServiceDependencies = {
-    moviesRepository: MoviesRepository
-}
-
-export class RatingService {
+export class RatingService implements IRatingService {
     private readonly defaultLimit: number = 10
     private readonly moviesRepository
 
@@ -24,6 +20,7 @@ export class RatingService {
         )
     }
 
+    // TODO: Separate this method into a separate utility class
     private sortByProperty(movies: Movie[], property: string, isAsc = false): Movie[] {
         // @ts-ignore
         return movies.sort((first, second) => isAsc ? first[property] - second[property] : second[property] - first[property])

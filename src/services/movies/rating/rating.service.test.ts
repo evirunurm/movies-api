@@ -1,13 +1,13 @@
 import {RatingService} from "./rating.service";
-import {MoviesRepository} from "../../../db/repositories/movies/movies.repository";
 import {MovieMother} from "../../../../test/builders/moviesMother";
+import {IMoviesRepository} from "../../../db/repositories/movies/imovies.repository";
 
 describe('Top-Rated Movies Service', () => {
     let topRatedMoviesService: RatingService
-    let moviesRepository: MoviesRepository
+    let moviesRepository: IMoviesRepository
 
     beforeEach(() => {
-        moviesRepository = jest.fn() as unknown as MoviesRepository
+        moviesRepository = {} as IMoviesRepository
         topRatedMoviesService = new RatingService({moviesRepository})
     })
 

@@ -1,18 +1,8 @@
-import {MoviesRepository} from "../../../db/repositories/movies/movies.repository";
 import {PaginatedMoviesView} from "../../../domain/view/paginatedMovies.view";
 import {PaginationView} from "../../../domain/view/pagination.view";
+import {INewReleasesService, NewReleasesGetConfiguration, NewReleasesServiceDependencies} from "./inewReleases.service";
 
-type NewReleasesGetConfiguration = {
-    isAsc?: boolean,
-    perPage?: number,
-    page?: number
-}
-
-type NewReleasesServiceDependencies = {
-    moviesRepository: MoviesRepository
-}
-
-export class NewReleasesService {
+export class NewReleasesService implements INewReleasesService {
     private readonly defaultPerPage: number = 10
     private readonly moviesRepository
 

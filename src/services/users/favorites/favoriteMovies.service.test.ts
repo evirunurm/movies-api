@@ -1,13 +1,13 @@
-import {FavoritesRepository} from "../../../db/repositories/favories/favories.repository";
 import {FavoriteMoviesService} from "./favoriteMovies.service";
 import FavoriteMovie from "../../../domain/entity/favoriteMovies";
+import {IFavoritesRepository} from "../../../db/repositories/favories/ifavories.repository";
 
 describe('Favorite Movies Service', () => {
     let usersFavoriteMoviesService: FavoriteMoviesService
-    let favoritesRepository: FavoritesRepository
+    let favoritesRepository: IFavoritesRepository
 
     beforeEach(() => {
-        favoritesRepository = jest.fn() as unknown as FavoritesRepository
+        favoritesRepository = {} as IFavoritesRepository
         usersFavoriteMoviesService = new FavoriteMoviesService({favoritesRepository})
     })
 

@@ -1,18 +1,8 @@
 import Movie from "../../../domain/entity/movie";
 import {Database} from "sqlite3";
-import {DBClient} from "../../dbClient";
+import {IMoviesRepository, MoviesRepositoryDependencies, NewReleasesQuery,} from "./imovies.repository";
 
-type MoviesRepositoryDependencies = {
-    dbClient: DBClient
-}
-
-type NewReleasesQuery = {
-    offset?: number
-    perPage?: number
-    isAsc?: boolean
-}
-
-export class MoviesRepository {
+export class MoviesRepository implements IMoviesRepository {
     private db: Database
 
     constructor ({dbClient}: MoviesRepositoryDependencies ) {
@@ -71,6 +61,7 @@ export class MoviesRepository {
         })
     }
 
+    // TODO: Separate this method into a separate mapper/utility class
     private mapRowToMovie (row: any): Movie {
         return new Movie(
             row.title,

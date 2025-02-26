@@ -13,6 +13,7 @@ describe('Popular Movies', () => {
     let db: Database
 
     beforeEach(async () => {
+
         const dbClient = new DBClient({dbFile: ':memory:'})
         await dbClient.init() // Waiting for database setup: table creation, enabling foreign keys, etc.
         db = dbClient.getDB()
