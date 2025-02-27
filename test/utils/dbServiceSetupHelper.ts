@@ -1,10 +1,10 @@
-import {DBClient} from "../../src/db/dbClient";
-import Injector from "../../src/injector";
+import {SqliteDBClient} from "../../src/shared/infrastructure/sqlite/sqliteDBClient";
+import Injector from "../../src/shared/infrastructure/injector";
 import {asValue} from "awilix";
-import App from "../../src/app";
+import App from "../../src/shared/infrastructure/app";
 
 export async function setupDatabaseService() {
-    const dbClient = new DBClient({dbFile: ':memory:'})
+    const dbClient = new SqliteDBClient({dbFile: ':memory:'})
     await dbClient.init() // Waiting for database setup: table creation, enabling foreign keys, etc.
     const db = dbClient.getDB()
     const injector = new Injector()

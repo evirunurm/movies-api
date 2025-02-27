@@ -1,8 +1,8 @@
 import request from 'supertest'
-import App from "../../src/app";
+import App from "../../src/shared/infrastructure/app";
 import {Database} from "sqlite3";
 import {MovieMother} from "../builders/moviesMother";
-import {DBSeeder} from "../../src/db/seeder/dbSeeder";
+import {DBSeeder} from "../../src/shared/infrastructure/sqlite/dbSeeder";
 import {setupDatabaseService} from "../utils/dbServiceSetupHelper";
 
 describe('Popular Movies', () => {

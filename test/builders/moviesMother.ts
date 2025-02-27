@@ -1,4 +1,4 @@
-import Movie from "../../src/domain/entity/movie";
+import Movie from "../../src/movies/domain/models/movie";
 
 type MovieConfiguration = {
     title?: string
