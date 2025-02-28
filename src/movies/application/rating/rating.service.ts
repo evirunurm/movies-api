@@ -1,6 +1,6 @@
 import {MoviesView} from "../../domain/movies.view";
-import Movie from "../../domain/models/movie";
 import {MoviesRepository} from "../../../favorites/domain/ports/movies.repository";
+import MoviesList from "../../domain/models/moviesList";
 
 export type RatingServiceDependencies = {
     moviesRepository: MoviesRepository
@@ -17,16 +17,9 @@ export class RatingService {
     }
 
     async get(limit: number | undefined = undefined): Promise<MoviesView> {
-        const movies = await this.moviesRepository.getAll()
-        const sortedMovies = this.sortByProperty(movies, 'rating')
-        return new MoviesView(
-            sortedMovies.slice(0, limit || this.defaultLimit)
-        )
-    }
-
-    // TODO: Separate this method into a separate utility class
-    private sortByProperty(movies: Movie[], property: string, isAsc = false): Movie[] {
-        // @ts-ignore
-        return movies.sort((first, second) => isAsc ? first[property] - second[property] : second[property] - first[property])
+        const moviesList = new MoviesList(await this.moviesRepository.getAll())
+        moviesList.sortByProperty('rating')
+        moviesList.limit(limit || this.defaultLimit)
+        return new MoviesView(moviesList.getMovies())
     }
 }
