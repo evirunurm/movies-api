@@ -1,19 +1,19 @@
 import express from 'express';
 
 export default class GlobalRoutes {
-    private router = express.Router();
+    private router = express.Router()
 
     constructor () {
-        this.initializeRoutes();
+        this.initializeRoutes()
     }
 
     public getRouter() {
-        return this.router;
+        return this.router
     }
 
     private initializeRoutes() {
         this.router.get('/', (req: express.Request, res: express.Response) => {
-            res.send('Welcome to the movies API ✨');
-        });
+            res.send('Welcome to the movies API ✨')
+        })
     }
 }

@@ -4,6 +4,7 @@ import {ElementNotFoundError} from "../../domain/elementNotFoundError";
 import {FavoritesRepository} from "../../../movies/domain/ports/favorites.repository";
 import FavoriteMovies from "../../domain/models/favoriteMovies";
 import {SqliteDBClient} from "../../../shared/infrastructure/sqlite/sqliteDBClient";
+import {MovieMapper} from "../../../shared/infrastructure/movieMapper";
 
 export type SqliteFavoritesRepositoryDependencies = {
     dbClient: SqliteDBClient
@@ -54,19 +55,8 @@ export class SqliteFavoritesRepository implements FavoritesRepository {
                     reject(error)
                     return
                 }
-                resolve(rows.map(this.mapRowToMovie))
+                resolve(rows.map(MovieMapper.RowToMovie))
             }
         )})
-    }
-
-    // TODO: Separate this method into a separate mapper/utility class
-    private mapRowToMovie (row: any): Movie {
-        return new Movie(
-            row.title,
-            new Date(row.release_date),
-            row.popularity,
-            row.rating,
-            row.id
-        )
     }
 }

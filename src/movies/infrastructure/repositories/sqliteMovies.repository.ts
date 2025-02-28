@@ -2,6 +2,7 @@ import Movie from "../../domain/models/movie";
 import {Database} from "sqlite3";
 import {MoviesRepository, NewReleasesQuery,} from "../../../favorites/domain/ports/movies.repository";
 import {SqliteDBClient} from "../../../shared/infrastructure/sqlite/sqliteDBClient";
+import {MovieMapper} from "../../../shared/infrastructure/movieMapper";
 
 export type SqliteMoviesRepositoryDependencies = {
     dbClient: SqliteDBClient
@@ -23,7 +24,7 @@ export class SqliteMoviesRepository implements MoviesRepository {
                     reject(err)
                     return
             }
-                resolve(rows.map(this.mapRowToMovie))
+                resolve(rows.map(MovieMapper.RowToMovie))
             })
         })
     }
@@ -41,7 +42,7 @@ export class SqliteMoviesRepository implements MoviesRepository {
 
         return new Promise((resolve, reject) => {
             this.db.each(query, (_, rows: any) => {
-                movies.push(this.mapRowToMovie(rows))
+                movies.push(MovieMapper.RowToMovie(rows))
             }, (error, _count) => {
                 if (error) {
                     reject(error)
@@ -64,15 +65,5 @@ export class SqliteMoviesRepository implements MoviesRepository {
                 resolve(row.count)
             })
         })
-    }
-
-    // TODO: Separate this method into a separate mapper/utility class
-    private mapRowToMovie (row: any): Movie {
-        return new Movie(
-            row.title,
-            new Date(row.release_date),
-            row.popularity,
-            row.id
-        )
     }
 }
