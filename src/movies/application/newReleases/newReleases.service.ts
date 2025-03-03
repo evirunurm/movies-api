@@ -20,11 +20,11 @@ export class NewReleasesService {
         this.moviesRepository = moviesRepository
     }
 
-    async get({isAsc = false, perPage, page = 1}: NewReleasesGetConfiguration): Promise<PaginatedMoviesView> {
-        const limit: number = perPage || this.defaultPerPage
-        const offset: number = (page - 1) * limit
-        const movies = await this.moviesRepository.getNewReleasesPaginated({offset, perPage: limit, isAsc})
+    async get({isAsc = false, perPage: givenPerPage, page = 1}: NewReleasesGetConfiguration): Promise<PaginatedMoviesView> {
+        const perPage: number = givenPerPage || this.defaultPerPage
+        const offset: number = (page - 1) * perPage
+        const movies = await this.moviesRepository.getNewReleasesPaginated({offset, perPage: perPage, isAsc})
         const total = await this.moviesRepository.getCountNewReleases()
-        return new PaginatedMoviesView(movies, new PaginationView(total, page, limit))
+        return new PaginatedMoviesView(movies, new PaginationView(total, page, perPage))
     }
 }

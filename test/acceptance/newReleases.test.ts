@@ -1,5 +1,5 @@
 import request from 'supertest'
-import App from "../../src/shared/infrastructure/app";
+import App from "../../src/app/infrastructure/app";
 import {setupDatabaseService} from "../utils/dbServiceSetupHelper";
 
 describe('New-Releases Movies', () => {

@@ -3,7 +3,7 @@ import Movie from "../../../movies/domain/models/movie";
 import {ElementNotFoundError} from "../../domain/elementNotFoundError";
 import {FavoritesRepository} from "../../../movies/domain/ports/favorites.repository";
 import FavoriteMovies from "../../domain/models/favoriteMovies";
-import {SqliteDBClient} from "../../../shared/infrastructure/sqlite/sqliteDBClient";
+import {SqliteDBClient} from "../../../app/infrastructure/sqlite/sqliteDBClient";
 import {MovieMapper} from "../../../shared/infrastructure/movieMapper";
 
 export type SqliteFavoritesRepositoryDependencies = {

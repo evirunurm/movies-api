@@ -1,6 +1,6 @@
 import {NewReleasesService} from "./newReleases.service";
-import {MovieMother} from "../../../../test/builders/moviesMother";
 import {MoviesRepository} from "../../../favorites/domain/ports/movies.repository";
+import {MoviesListMother} from "../../../../test/builders/moviesListMother";
 
 describe('New Releases Service', () => {
     let newReleasesService: NewReleasesService
@@ -12,17 +12,10 @@ describe('New Releases Service', () => {
     })
 
     it('should get correct pagination if nothing is specified', async () => {
-        const today = new Date()
         moviesRepository.getCountNewReleases = jest.fn().mockResolvedValue(20)
-        moviesRepository.getNewReleasesPaginated = jest.fn().mockResolvedValue(
-            Array.from({length: 10}, (_, index) => {
-                const releaseDate = new Date()
-                releaseDate.setDate(today.getDate() + index + 1)
-                return MovieMother.aMovie({
-                    nameIdentifier: index,
-                    releaseDate
-                })
-            }))
+        moviesRepository.getNewReleasesPaginated = jest.fn().mockResolvedValue(() =>
+            MoviesListMother.aListOfMovies({length: 20})
+        )
 
         const result = await newReleasesService.get({})
 
@@ -32,17 +25,10 @@ describe('New Releases Service', () => {
     })
 
     it('should get correct pagination if specified', async () => {
-        const today = new Date()
         moviesRepository.getCountNewReleases = jest.fn().mockResolvedValue(10)
-        moviesRepository.getNewReleasesPaginated = jest.fn().mockResolvedValue(
-            Array.from({length: 10}, (_, index) => {
-                const releaseDate = new Date()
-                releaseDate.setDate(today.getDate() + index + 1)
-                return MovieMother.aMovie({
-                    nameIdentifier: index,
-                    releaseDate
-                })
-            }))
+        moviesRepository.getNewReleasesPaginated = jest.fn().mockResolvedValue(() =>
+            MoviesListMother.aListOfMovies({length: 10})
+        )
 
         const result = await newReleasesService.get({
             page: 2,
@@ -55,17 +41,10 @@ describe('New Releases Service', () => {
     })
 
     it('should get correct pagination when there are less elements than a single page size', async () => {
-        const today = new Date()
         moviesRepository.getCountNewReleases = jest.fn().mockResolvedValue(3)
-        moviesRepository.getNewReleasesPaginated = jest.fn().mockResolvedValue(
-            Array.from({length: 3}, (_, index) => {
-                const releaseDate = new Date()
-                releaseDate.setDate(today.getDate() + index + 1)
-                return MovieMother.aMovie({
-                    nameIdentifier: index,
-                    releaseDate
-                })
-            }))
+        moviesRepository.getNewReleasesPaginated = jest.fn().mockResolvedValue(() =>
+            MoviesListMother.aListOfMovies({length: 3})
+        )
 
         const result = await newReleasesService.get({
             page: 1,
@@ -78,17 +57,10 @@ describe('New Releases Service', () => {
     })
 
     it('should get correct pagination when viewing a page with no elements', async () => {
-        const today = new Date()
         moviesRepository.getCountNewReleases = jest.fn().mockResolvedValue(6)
-        moviesRepository.getNewReleasesPaginated = jest.fn().mockResolvedValue(
-            Array.from({length: 6}, (_, index) => {
-                const releaseDate = new Date()
-                releaseDate.setDate(today.getDate() + index + 1)
-                return MovieMother.aMovie({
-                    nameIdentifier: index,
-                    releaseDate
-                })
-            }))
+        moviesRepository.getNewReleasesPaginated = jest.fn().mockResolvedValue(() =>
+            MoviesListMother.aListOfMovies({length: 6})
+        )
 
         const result = await newReleasesService.get({
             page: 3,

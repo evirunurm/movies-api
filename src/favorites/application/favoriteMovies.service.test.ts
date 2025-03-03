@@ -14,10 +14,7 @@ describe('Favorite Movies Service', () => {
     it('should allow adding movies as favorites', async () => {
         favoritesRepository.insert = jest.fn().mockResolvedValue(1)
 
-        await usersFavoriteMoviesService.post({
-            userId: 1,
-            movieId: 5
-        })
+        await usersFavoriteMoviesService.post(new FavoriteMovie(1, 5))
 
         expect(favoritesRepository.insert).toHaveBeenCalledWith({
             userId: 1,
@@ -28,10 +25,7 @@ describe('Favorite Movies Service', () => {
     it('should allow deleting favorite movies', async () => {
         favoritesRepository.delete = jest.fn()
 
-        await usersFavoriteMoviesService.delete({
-            userId: 1,
-            movieId: 5
-        })
+        await usersFavoriteMoviesService.delete(new FavoriteMovie(1, 5))
 
         expect(favoritesRepository.delete).toHaveBeenCalledWith({
             userId: 1,

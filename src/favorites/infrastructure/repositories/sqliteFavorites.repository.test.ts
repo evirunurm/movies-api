@@ -1,9 +1,9 @@
 import {Database} from "sqlite3";
-import {MovieMother} from "../../../../test/builders/moviesMother";
+import {MovieMother} from "../../../../test/builders/movieMother";
 import {SqliteFavoritesRepository} from "./sqliteFavorites.repository";
-import {DBSeeder} from "../../../shared/infrastructure/sqlite/dbSeeder";
+import {DBSeeder} from "../../../app/infrastructure/sqlite/dbSeeder";
 import {User} from "../../domain/models/user";
-import {SqliteDBClient} from "../../../shared/infrastructure/sqlite/sqliteDBClient";
+import {SqliteDBClient} from "../../../app/infrastructure/sqlite/sqliteDBClient";
 
 describe('Favorites Repository', () => {
     let favoritesRepository: SqliteFavoritesRepository

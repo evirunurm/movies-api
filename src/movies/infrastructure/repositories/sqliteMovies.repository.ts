@@ -1,7 +1,7 @@
 import Movie from "../../domain/models/movie";
 import {Database} from "sqlite3";
 import {MoviesRepository, NewReleasesQuery,} from "../../../favorites/domain/ports/movies.repository";
-import {SqliteDBClient} from "../../../shared/infrastructure/sqlite/sqliteDBClient";
+import {SqliteDBClient} from "../../../app/infrastructure/sqlite/sqliteDBClient";
 import {MovieMapper} from "../../../shared/infrastructure/movieMapper";
 
 export type SqliteMoviesRepositoryDependencies = {

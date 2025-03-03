@@ -1,6 +1,6 @@
 import {PopularityService} from "./popularity.service";
-import {MovieMother} from "../../../../test/builders/moviesMother";
 import {MoviesRepository} from "../../../favorites/domain/ports/movies.repository";
+import {MoviesListMother} from "../../../../test/builders/moviesListMother";
 
 describe('Popular Movies Service', () => {
     let popularMoviesService: PopularityService
@@ -12,11 +12,7 @@ describe('Popular Movies Service', () => {
     })
     
     it('should get a list of movies, ordered by popularity', async () => {
-        const movies = Array.from({length: 5}, (_, index) =>
-            MovieMother.aMovie({
-                nameIdentifier: index,
-                popularity: index
-            }))
+        const movies = MoviesListMother.aListOfMoviesWithDifferentPopularity({length: 5})
         moviesRepository.getAll = jest.fn().mockResolvedValue(movies)
     
         const popularMovies = (await popularMoviesService.get()).data
@@ -27,11 +23,7 @@ describe('Popular Movies Service', () => {
     })
     
     it('should get a default maximum amount of 10 most popular movies', async () => {
-        const movies = Array.from({length: 20}, (_, index) =>
-            MovieMother.aMovie({
-                nameIdentifier: index,
-                popularity: index
-            }))
+        const movies = MoviesListMother.aListOfMoviesWithDifferentPopularity({length: 20})
         moviesRepository.getAll = jest.fn().mockResolvedValue(movies)
         const popularMovies = (await popularMoviesService.get()).data
     
@@ -41,11 +33,7 @@ describe('Popular Movies Service', () => {
     })
     
     it('should get the amount of most popular movies, if specified', async () => {
-        const movies = Array.from({length: 20}, (_, index) =>
-            MovieMother.aMovie({
-                nameIdentifier: index,
-                popularity: index
-            }))
+        const movies = MoviesListMother.aListOfMoviesWithDifferentPopularity({length: 20})
         moviesRepository.getAll = jest.fn().mockResolvedValue(movies)
         const popularMovies = (await popularMoviesService.get(5)).data
     

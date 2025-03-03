@@ -1,9 +1,9 @@
 import request from 'supertest'
-import App from '../../src/shared/infrastructure/app'
-import {DBSeeder} from "../../src/shared/infrastructure/sqlite/dbSeeder";
+import App from '../../src/app/infrastructure/app'
+import {DBSeeder} from "../../src/app/infrastructure/sqlite/dbSeeder";
 import {User} from "../../src/favorites/domain/models/user";
 import {Database} from "sqlite3";
-import {MovieMother} from "../builders/moviesMother";
+import {MovieMother} from "../builders/movieMother";
 import {setupDatabaseService} from "../utils/dbServiceSetupHelper";
 
 describe('Favorite Movies', () => {

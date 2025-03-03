@@ -1,7 +1,7 @@
-import {SqliteDBClient} from "../../src/shared/infrastructure/sqlite/sqliteDBClient";
-import Injector from "../../src/shared/infrastructure/injector";
+import {SqliteDBClient} from "../../src/app/infrastructure/sqlite/sqliteDBClient";
+import Injector from "../../src/app/infrastructure/injector";
 import {asValue} from "awilix";
-import App from "../../src/shared/infrastructure/app";
+import App from "../../src/app/infrastructure/app";
 
 export async function setupDatabaseService() {
     const dbClient = new SqliteDBClient({dbFile: ':memory:'})

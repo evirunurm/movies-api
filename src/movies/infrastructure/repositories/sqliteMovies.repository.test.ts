@@ -1,8 +1,9 @@
 import {SqliteMoviesRepository} from "./sqliteMovies.repository";
 import {Database} from "sqlite3";
-import {MovieMother} from "../../../../test/builders/moviesMother";
-import {DBSeeder} from "../../../shared/infrastructure/sqlite/dbSeeder";
-import {SqliteDBClient} from "../../../shared/infrastructure/sqlite/sqliteDBClient";
+import {MovieMother} from "../../../../test/builders/movieMother";
+import {DBSeeder} from "../../../app/infrastructure/sqlite/dbSeeder";
+import {SqliteDBClient} from "../../../app/infrastructure/sqlite/sqliteDBClient";
+import {MoviesListMother} from "../../../../test/builders/moviesListMother";
 
 describe('Movies Repository', () => {
     let moviesRepository: SqliteMoviesRepository
@@ -17,8 +18,7 @@ describe('Movies Repository', () => {
     })
 
     it('should get the stored movies', async () => {
-        const movies = Array.from({length: 20}, (_, nameIdentifier) =>
-            MovieMother.aMovie({nameIdentifier}))
+        const movies = MoviesListMother.aListOfMovies({length: 20})
         await DBSeeder.seedMovies(db, movies)
 
         const storedMovies = await moviesRepository.getAll()
@@ -69,16 +69,7 @@ describe('Movies Repository', () => {
     })
 
     it('should only get new-releases movies, in descending order by default', async  () => {
-        const movies = Array.from({length: 4}, (_, nameIdentifier) =>{
-            const today = new Date()
-            return MovieMother.aMovie({
-                nameIdentifier,
-                releaseDate: new Date(
-                    today.getFullYear() + nameIdentifier,
-                    today.getMonth(),
-                    today.getDate())
-            })
-        })
+        const movies = MoviesListMother.aListOfNotReleasedMoviesWithDifferentYears({length: 4})
         await DBSeeder.seedMovies(db, movies)
 
         const storedMovies = await moviesRepository.getNewReleasesPaginated({})
@@ -90,16 +81,7 @@ describe('Movies Repository', () => {
     })
 
     it('should only get new-releases, in ascending order', async  () => {
-        const movies = Array.from({length: 4}, (_, nameIdentifier) =>{
-            const today = new Date()
-            return MovieMother.aMovie({
-                nameIdentifier,
-                releaseDate: new Date(
-                    today.getFullYear() + nameIdentifier,
-                    today.getMonth(),
-                    today.getDate())
-            })
-        })
+        const movies = MoviesListMother.aListOfNotReleasedMoviesWithDifferentYears({length: 4})
         await DBSeeder.seedMovies(db, movies)
 
         const storedMovies = await moviesRepository.getNewReleasesPaginated({isAsc: true})

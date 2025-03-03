@@ -1,6 +1,6 @@
 import {RatingService} from "./rating.service";
-import {MovieMother} from "../../../../test/builders/moviesMother";
 import {MoviesRepository} from "../../../favorites/domain/ports/movies.repository";
+import {MoviesListMother} from "../../../../test/builders/moviesListMother";
 
 describe('Top-Rated Movies Service', () => {
     let topRatedMoviesService: RatingService
@@ -12,11 +12,7 @@ describe('Top-Rated Movies Service', () => {
     })
 
     it('should get a list of movies, ordered by top-rated', async () => {
-        const movies = Array.from({length: 5}, (_, index) =>
-            MovieMother.aMovie({
-                nameIdentifier: index,
-                rating: index}
-            ))
+        const movies = MoviesListMother.aListOfMoviesWithDifferentRatings({length: 5})
         moviesRepository.getAll = jest.fn().mockResolvedValue(movies)
 
         const topRatedMovies = (await topRatedMoviesService.get()).data
@@ -27,11 +23,7 @@ describe('Top-Rated Movies Service', () => {
     })
 
     it('should get a default maximum amount of 10 top rated movies', async () => {
-        const movies = Array.from({length: 15}, (_, index) =>
-            MovieMother.aMovie({
-                nameIdentifier: index,
-                rating: index
-            }))
+        const movies = MoviesListMother.aListOfMoviesWithDifferentRatings({length: 15})
         moviesRepository.getAll = jest.fn().mockResolvedValue(movies)
 
         const topRatedMovies = (await topRatedMoviesService.get()).data
@@ -42,11 +34,7 @@ describe('Top-Rated Movies Service', () => {
     })
 
     it('should get the amount of top rated movies, if specified', async () => {
-        const movies = Array.from({length: 10}, (_, i) =>
-            MovieMother.aMovie({
-                nameIdentifier: i,
-                rating: i
-            }))
+        const movies = MoviesListMother.aListOfMoviesWithDifferentRatings({length: 10})
         moviesRepository.getAll = jest.fn().mockResolvedValue(movies)
 
         const topRatedMovies = (await topRatedMoviesService.get(5)).data
