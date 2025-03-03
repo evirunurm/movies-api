@@ -8,6 +8,7 @@ type UsersControllerDependencies = {
 }
 
 export class UsersController {
+    private readonly errorMessage = 'The request body is not valid'
     private readonly favoriteMoviesService
 
     constructor( {favoriteMoviesService}: UsersControllerDependencies) {
@@ -15,10 +16,11 @@ export class UsersController {
     }
 
     public async postFavoriteMovie(req: Request, res: Response) {
-        if (!req.body.userId || !req.body.movieId) {
-            res.status(400).send({error: 'userId and movieId are required'})
+        if (!this.isValidCommandRequest(req)) {
+            res.status(400).send({error: this.errorMessage})
             return
         }
+
         try {
             await this.favoriteMoviesService.post({
                 userId: req.body.userId,
@@ -34,10 +36,11 @@ export class UsersController {
     }
 
     public async deleteFavoriteMovie(req: Request, res: Response) {
-        if (!req.body.userId || !req.body.movieId) {
-            res.status(400).send({error: 'userId and movieId are required'})
+        if (!this.isValidCommandRequest(req)) {
+            res.status(400).send({error: this.errorMessage})
             return
         }
+
         await this.favoriteMoviesService.delete({
             userId: req.body.userId,
             movieId: req.body.movieId
@@ -46,13 +49,18 @@ export class UsersController {
     }
 
     public async getFavoriteMovies(req: Request, res: Response) {
-        if (!req.body.userId) {
-            res.status(400).send({error: 'userId is required'})
+        if (!this.isValidQueryRequest(req)) {
+            res.status(400).send({error: this.errorMessage})
             return
         }
-        const favorites = await this.favoriteMoviesService.getAllForUser(
-            req.body.userId
-        )
+        
+        const favorites = await this.favoriteMoviesService.getAllForUser(req.body.userId)
         res.status(200).send(new MoviesView(favorites))
     }
+
+    private isValidCommandRequest = (req: Request) =>
+        req.body.userId && req.body.movieId
+
+    private isValidQueryRequest = (req: Request) =>
+        req.body.userId
 }

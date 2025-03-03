@@ -1,7 +1,7 @@
 import {asClass, asValue, AwilixContainer, createContainer} from "awilix";
 import {SqliteDBClient} from "./sqlite/sqliteDBClient";
 import UsersRoutes from "../../favorites/infrastructure/users.routes";
-import MoviesRoutes from "../../movies/infrastructure/routes/movies.routes";
+import MoviesRoutes from "../../movies/infrastructure/movies.routes";
 import {UsersController} from "../../favorites/infrastructure/users.controller";
 import {MoviesController} from "../../movies/infrastructure/movies.controller";
 import {SqliteMoviesRepository} from "../../movies/infrastructure/repositories/sqliteMovies.repository";

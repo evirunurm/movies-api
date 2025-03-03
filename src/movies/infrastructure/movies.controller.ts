@@ -37,11 +37,15 @@ export class MoviesController {
     }
 
     public async getNewReleases(req: Request, res: Response) {
+        const {isAsc, perPage, page} = this.getNewReleasesParams(req)
+        const newReleasesMovies = await this.newReleasesService.get({isAsc, perPage, page})
+        res.send(newReleasesMovies)
+    }
+
+    private getNewReleasesParams(req: Request) {
         const isAsc = req.query.order == 'asc'
         const page = req.query.page ? parseInt(req.query.page as string) : 1
         const perPage = req.query.perPage ? parseInt(req.query.perPage as string) : undefined
-
-        const newReleasesMovies = await this.newReleasesService.get({isAsc, perPage, page})
-        res.send(newReleasesMovies)
+        return {isAsc, perPage, page}
     }
 }

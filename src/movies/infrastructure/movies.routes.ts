@@ -1,5 +1,5 @@
 import express from 'express';
-import {MoviesController} from "../movies.controller";
+import {MoviesController} from "./movies.controller";
 
 type MoviesRoutesDependencies = {
     moviesController: MoviesController
