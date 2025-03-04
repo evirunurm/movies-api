@@ -8,6 +8,6 @@ export type NewReleasesQuery = {
 
 export interface MoviesRepository {
     getAll (): Promise<Movie[]>
-    getNewReleasesPaginated ({offset, perPage, isAsc}: NewReleasesQuery): Promise<Movie[]>
+    getNewReleasesPaginated (newReleasesQuery: NewReleasesQuery): Promise<Movie[]>
     getCountNewReleases (): Promise<number>
 }

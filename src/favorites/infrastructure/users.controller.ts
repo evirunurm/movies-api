@@ -8,7 +8,7 @@ type UsersControllerDependencies = {
 }
 
 export class UsersController {
-    private readonly errorMessage = 'The request body is not valid'
+    private readonly invalidBodyMessage = 'The request body is not valid'
     private readonly favoriteMoviesService
 
     constructor( {favoriteMoviesService}: UsersControllerDependencies) {
@@ -17,7 +17,7 @@ export class UsersController {
 
     public async postFavoriteMovie(req: Request, res: Response) {
         if (!this.isValidCommandRequest(req)) {
-            res.status(400).send({error: this.errorMessage})
+            res.status(400).send({error: this.invalidBodyMessage})
             return
         }
 
@@ -37,7 +37,7 @@ export class UsersController {
 
     public async deleteFavoriteMovie(req: Request, res: Response) {
         if (!this.isValidCommandRequest(req)) {
-            res.status(400).send({error: this.errorMessage})
+            res.status(400).send({error: this.invalidBodyMessage})
             return
         }
 
@@ -50,7 +50,7 @@ export class UsersController {
 
     public async getFavoriteMovies(req: Request, res: Response) {
         if (!this.isValidQueryRequest(req)) {
-            res.status(400).send({error: this.errorMessage})
+            res.status(400).send({error: this.invalidBodyMessage})
             return
         }
         
