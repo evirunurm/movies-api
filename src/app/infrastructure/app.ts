@@ -1,6 +1,7 @@
 import express from 'express'
 import GlobalRoutes from './routes/routes'
 import Injector from "./injector";
+import cors from 'cors'
 require('dotenv').config()
 
 type AppDependencies = {
@@ -21,6 +22,10 @@ export default class App {
 
     private initializeMiddlewares() {
         this.app.use(express.json())
+        this.app.use(cors({
+            origin: '*',
+            methods: ['GET', 'POST', 'PUT', 'DELETE']
+        }))
     }
 
     private initializeRoutes() {

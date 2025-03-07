@@ -15,6 +15,20 @@ export class SqliteMoviesRepository implements MoviesRepository {
         this.db = dbClient.getDB()
     }
 
+    getCountMovies(): Promise<number> {
+        const query = `SELECT COUNT(*) as count FROM movies`
+
+        return new Promise((resolve, reject) => {
+            this.db.get(query, (err, row: any) => {
+                if (err) {
+                    reject(err)
+                    return
+                }
+                resolve(row.count)
+            })
+        })
+    }
+
     public async getAll (): Promise<Movie[]> {
         const query = 'SELECT * FROM movies'
 

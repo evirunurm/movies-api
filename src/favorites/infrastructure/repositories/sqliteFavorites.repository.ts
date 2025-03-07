@@ -5,6 +5,7 @@ import {FavoritesRepository} from "../../../movies/domain/ports/favorites.reposi
 import FavoriteMovies from "../../domain/models/favoriteMovies";
 import {SqliteDBClient} from "../../../app/infrastructure/sqlite/sqliteDBClient";
 import {MovieMapper} from "../../../shared/infrastructure/movieMapper";
+import {ElementAlreadyExistsError} from "../../domain/elementAlreadyExistsError";
 
 export type SqliteFavoritesRepositoryDependencies = {
     dbClient: SqliteDBClient
@@ -17,9 +18,27 @@ export class SqliteFavoritesRepository implements FavoritesRepository {
         this.db = dbClient.getDB()
     }
 
-    insert({movieId, userId}: FavoriteMovies): Promise<number> {
-        const insertQuery = `INSERT INTO favoriteMovies(userId, movieId) VALUES(?, ?)`
+    private existsFavoriteMovieForUser(movieId: number, userId: number): Promise<boolean> {
+        const selectQuery = `SELECT COUNT(*) as amount FROM favoriteMovies WHERE userId = ? AND movieId = ?`
 
+        return new Promise((resolve, reject) => {
+            this.db.all(selectQuery, [userId, movieId], (error, rows: any) => {
+                    if (error) {
+                        reject(error)
+                        return
+                    }
+                    resolve(rows[0].amount > 0)
+                }
+            )})
+    }
+
+    async insert({movieId, userId}: FavoriteMovies): Promise<number> {
+        const alreadyExistsFavoriteMovie = await this.existsFavoriteMovieForUser(movieId, userId)
+        if (alreadyExistsFavoriteMovie) {
+            return Promise.reject(new ElementAlreadyExistsError('Favorite movie already exists for user with id ' + userId))
+        }
+
+        const insertQuery = `INSERT INTO favoriteMovies(userId, movieId) VALUES(?, ?)`
         return new Promise((resolve, reject) => {
             this.db.run(insertQuery, [userId, movieId], function (error) {
                 if (error) {

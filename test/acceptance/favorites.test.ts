@@ -27,6 +27,18 @@ describe('Favorite Movies', () => {
         expect(response.status).toEqual(201)
     })
 
+    it('should return error status when not created for an existing user because its already users favorite', async () => {
+        await DBSeeder.seedUsers(db, [new User('name', 'email')])
+        await DBSeeder.seedMovies(db, [MovieMother.aMovie({})])
+        await DBSeeder.seedFavorites(db, [{userId: 1, movieId: 1}])
+
+        const response = await request(service.app)
+            .post('/api/user/favorites')
+            .send({userId: 1, movieId: 1})
+
+        expect(response.status).toEqual(403)
+    })
+
     it('should return error status when movie id is not passed when creating movie for user', async () => {
         const response = await request(service.app)
             .post('/api/user/favorites')

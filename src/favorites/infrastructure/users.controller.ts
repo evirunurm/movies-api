@@ -2,6 +2,7 @@ import {Request, Response} from 'express';
 import {MoviesView} from "../../movies/domain/movies.view";
 import {ElementNotFoundError} from "../domain/elementNotFoundError";
 import {FavoriteMoviesService} from "../application/favoriteMovies.service";
+import {ElementAlreadyExistsError} from "../domain/elementAlreadyExistsError";
 
 type UsersControllerDependencies = {
     favoriteMoviesService: FavoriteMoviesService
@@ -29,6 +30,10 @@ export class UsersController {
         } catch (error) {
             if (error instanceof ElementNotFoundError) {
                 res.status(404).send(error.message)
+                return
+            }
+            if (error instanceof ElementAlreadyExistsError) {
+                res.status(403).send(error.message)
                 return
             }
         }

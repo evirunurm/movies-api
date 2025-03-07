@@ -14,6 +14,7 @@ describe('Popular Movies Service', () => {
     it('should get a list of movies, ordered by popularity', async () => {
         const movies = MoviesListMother.aListOfMoviesWithDifferentPopularity({length: 5})
         moviesRepository.getAll = jest.fn().mockResolvedValue(movies)
+        moviesRepository.getCountMovies = jest.fn().mockResolvedValue(5)
     
         const popularMovies = (await popularMoviesService.get()).data
     
@@ -25,6 +26,8 @@ describe('Popular Movies Service', () => {
     it('should get a default maximum amount of 10 most popular movies', async () => {
         const movies = MoviesListMother.aListOfMoviesWithDifferentPopularity({length: 20})
         moviesRepository.getAll = jest.fn().mockResolvedValue(movies)
+        moviesRepository.getCountMovies = jest.fn().mockResolvedValue(20)
+
         const popularMovies = (await popularMoviesService.get()).data
     
         expect(popularMovies.length).toBe(10)
@@ -35,6 +38,8 @@ describe('Popular Movies Service', () => {
     it('should get the amount of most popular movies, if specified', async () => {
         const movies = MoviesListMother.aListOfMoviesWithDifferentPopularity({length: 20})
         moviesRepository.getAll = jest.fn().mockResolvedValue(movies)
+        moviesRepository.getCountMovies = jest.fn().mockResolvedValue(20)
+
         const popularMovies = (await popularMoviesService.get(5)).data
     
         expect(popularMovies.length).toBe(5)

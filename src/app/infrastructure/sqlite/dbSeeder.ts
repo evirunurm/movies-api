@@ -86,4 +86,20 @@ export class DBSeeder {
             })
         })
     }
+
+    static async seedFavorites(db: Database, param2: FavoriteMovies[]) {
+        const sqlInsert = `INSERT INTO favoriteMovies (userId, movieId)
+                           VALUES ${param2.map(favoriteMovie =>
+                        `('${favoriteMovie.userId}', ${favoriteMovie.movieId})`).join(',')}`
+
+        return new Promise((resolve, reject) => {
+            db.run(sqlInsert, (result: RunResult, err: Error) => {
+                if (err) {
+                    reject(err)
+                    return
+                }
+                resolve(result)
+            })
+        })
+    }
 }

@@ -91,4 +91,12 @@ describe('Movies Repository', () => {
         expect(storedMovies[1].title).toBe('Movie 2')
         expect(storedMovies[2].title).toBe('Movie 3')
     })
+
+    it('should get the count of all movies', async  () => {
+        const movies = MoviesListMother.aListOfMovies({length: 20})
+        await DBSeeder.seedMovies(db, movies)
+
+        const storedMovies = await moviesRepository.getCountMovies()
+        expect(storedMovies).toBe(20)
+    })
 })
